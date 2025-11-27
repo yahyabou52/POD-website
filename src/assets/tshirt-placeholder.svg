@@ -1,0 +1,17 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#F3F4F6"/>
+  
+  <!-- T-Shirt Shape -->
+  <path d="M100 120L100 100C100 80 120 60 140 60L260 60C280 60 300 80 300 100L300 120L320 140L320 180L300 200L300 340C300 360 280 380 260 380L140 380C120 380 100 360 100 340L100 200L80 180L80 140L100 120Z" fill="#E5E7EB"/>
+  
+  <!-- Sleeves -->
+  <ellipse cx="60" cy="160" rx="25" ry="40" fill="#E5E7EB"/>
+  <ellipse cx="340" cy="160" rx="25" ry="40" fill="#E5E7EB"/>
+  
+  <!-- Neckline -->
+  <path d="M160 60C160 40 180 20 200 20C220 20 240 40 240 60L240 80L160 80L160 60Z" fill="#D1D5DB"/>
+  
+  <!-- Text -->
+  <text x="200" y="320" text-anchor="middle" fill="#9CA3AF" font-family="Arial, sans-serif" font-size="16" font-weight="500">T-Shirt</text>
+  <text x="200" y="340" text-anchor="middle" fill="#9CA3AF" font-family="Arial, sans-serif" font-size="12">Placeholder</text>
+</svg>
