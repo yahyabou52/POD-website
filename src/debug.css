@@ -1,0 +1,15 @@
+* {
+  outline: 1px solid red !important;
+  color: black !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html, body, #root {
+  background: yellow !important;
+  min-height: 100vh !important;
+}
+
+div, section, header, footer {
+  background: rgba(0, 255, 0, 0.1) !important;
+}

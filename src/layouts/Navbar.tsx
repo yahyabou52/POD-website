@@ -18,7 +18,7 @@ export default function Navbar() {
     <motion.nav 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="sticky top-0 z-50 w-full glass-effect border-b border-white/10"
+      className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-xl shadow-sm border-b border-mist"
     >
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
@@ -28,10 +28,10 @@ export default function Navbar() {
             whileHover={{ scale: 1.05 }}
           >
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-950 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-onyx to-carbon rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold gradient-text font-heading">
+              <span className="text-2xl font-bold text-onyx font-heading">
                 PODify
               </span>
             </Link>
@@ -53,10 +53,10 @@ export default function Navbar() {
               >
                 <Link 
                   to={item.path} 
-                  className="text-sm font-medium text-gray-700 hover:text-primary transition-all duration-200 relative group"
+                  className="text-sm font-medium text-graphite hover:text-onyx transition-all duration-200 relative group"
                 >
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-onyx transition-all duration-200 group-hover:w-full" />
                 </Link>
               </motion.div>
             ))}
@@ -76,7 +76,7 @@ export default function Navbar() {
                   >
                     <Input
                       placeholder="Search products..."
-                      className="w-full pl-4 pr-10 py-2 border-gray-200 focus:border-primary"
+                      className="w-full pl-4 pr-10 py-2 border-mist focus:border-onyx"
                     />
                     <Button
                       variant="ghost"
@@ -92,9 +92,9 @@ export default function Navbar() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setIsSearchOpen(true)}
-                    className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                    className="p-2 rounded-full hover:bg-mist transition-colors"
                   >
-                    <Search className="h-5 w-5 text-gray-600" />
+                    <Search className="h-5 w-5 text-graphite" />
                   </motion.button>
                 )}
               </AnimatePresence>
@@ -105,14 +105,14 @@ export default function Navbar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleCart}
-              className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="relative p-2 rounded-full hover:bg-mist transition-colors"
             >
-              <ShoppingCart className="h-5 w-5 text-gray-600" />
+              <ShoppingCart className="h-5 w-5 text-graphite" />
               {totalItems > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-white text-xs flex items-center justify-center font-medium"
+                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-onyx text-white text-xs flex items-center justify-center font-medium"
                 >
                   {totalItems}
                 </motion.span>
@@ -150,13 +150,13 @@ export default function Navbar() {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="lg:hidden p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="lg:hidden p-2 rounded-full hover:bg-mist transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
-                <X className="h-6 w-6 text-gray-600" />
+                <X className="h-6 w-6 text-graphite" />
               ) : (
-                <Menu className="h-6 w-6 text-gray-600" />
+                <Menu className="h-6 w-6 text-graphite" />
               )}
             </motion.button>
           </div>
@@ -169,7 +169,7 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden py-6 border-t border-gray-200"
+              className="lg:hidden py-6 border-t border-mist"
             >
               <div className="flex flex-col space-y-4">
                 {[
@@ -186,7 +186,7 @@ export default function Navbar() {
                   >
                     <Link 
                       to={item.path} 
-                      className="block text-gray-700 hover:text-primary transition-colors py-2 font-medium"
+                      className="block text-graphite hover:text-onyx transition-colors py-2 font-medium"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.name}
@@ -196,7 +196,7 @@ export default function Navbar() {
                 
                 {!isAuthenticated && (
                   <motion.div 
-                    className="pt-4 border-t border-gray-200 space-y-3"
+                    className="pt-4 border-t border-mist space-y-3"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}

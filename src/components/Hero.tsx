@@ -20,7 +20,7 @@ export default function Hero() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: 0.6, ease: [0.6, 0.01, 0.05, 0.95] as const }
     }
   }
 

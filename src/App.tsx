@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './layouts/Layout'
-import Home from './pages/Home'
-import SimpleHome from './SimpleHome'
-import MinimalHome from './MinimalHome'
+import PremiumHome from './pages/PremiumHome'
 import Products from './pages/Products'
 import Customizer from './pages/Customizer'
 import Cart from './pages/Cart'
@@ -19,11 +17,8 @@ function App() {
     <ToastProvider>
       <Router>
         <Routes>
-          {/* Simple test route without layout */}
-          <Route path="/simple" element={<SimpleHome />} />
-          
           <Route path="/" element={<Layout />}>
-            <Route index element={<MinimalHome />} />
+            <Route index element={<PremiumHome />} />
             <Route path="products" element={<Products />} />
             <Route path="customizer" element={<Customizer />} />
             <Route path="cart" element={<Cart />} />

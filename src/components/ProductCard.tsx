@@ -15,13 +15,14 @@ interface ProductCardProps {
     originalPrice?: number
     image: string
     category: string
-    colors?: number
-    sizes?: number
+    colors?: string[] | number
+    sizes?: string[] | number
     rating?: number
     reviews?: number
     isNew?: boolean
     isSale?: boolean
   }
+  variant?: 'card' | 'list'
   className?: string
 }
 
@@ -119,9 +120,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className }) 
           <div className="flex justify-between items-center mb-4">
             {(product.colors || product.sizes) && (
               <p className="text-xs text-muted-foreground">
-                {product.colors && `${product.colors} colors`}
+                {product.colors && `${Array.isArray(product.colors) ? product.colors.length : product.colors} colors`}
                 {product.colors && product.sizes && ' • '}
-                {product.sizes && `${product.sizes} sizes`}
+                {product.sizes && `${Array.isArray(product.sizes) ? product.sizes.length : product.sizes} sizes`}
               </p>
             )}
           </div>
@@ -168,7 +169,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
       gridCols[columns],
       className
     )}>
-      {products.map((product, index) => (
+      {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>

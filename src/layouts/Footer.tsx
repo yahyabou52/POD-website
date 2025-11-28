@@ -1,217 +1,137 @@
 import { Link } from 'react-router-dom'
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, Sparkles, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { motion } from 'framer-motion'
 
 export default function Footer() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
-  }
-
   return (
-    <footer className="relative bg-primary text-white overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full -translate-x-48 -translate-y-48" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-48 translate-y-48" />
-      </div>
-
-      <div className="relative container mx-auto px-4">
-        {/* Newsletter Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="py-16 text-center border-b border-white/10"
-        >
-          <div className="max-w-2xl mx-auto space-y-6">
-            <div className="flex items-center justify-center space-x-2">
-              <Sparkles className="w-6 h-6 text-yellow-400" />
-              <h3 className="text-3xl font-bold font-heading">Stay Creative</h3>
-            </div>
-            <p className="text-white/80 text-lg">
-              Get the latest design trends, exclusive offers, and creative inspiration delivered to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <Input
-                placeholder="Enter your email"
-                className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white/40"
-              />
-              <Button className="bg-white text-primary hover:bg-gray-100 font-medium">
-                Subscribe
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-
+    <footer className="relative bg-onyx border-t border-graphite">
+      <div className="container mx-auto px-6 md:px-12">
         {/* Main Footer Content */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
-        >
-          {/* Company Info */}
-          <motion.div variants={itemVariants} className="space-y-6">
+        <div className="py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          {/* Brand Info */}
+          <div className="space-y-6">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-white" />
+              <div className="w-12 h-12 bg-gradient-to-br from-gold to-amber rounded-xl flex items-center justify-center shadow-lg">
+                <Sparkles className="w-7 h-7 text-onyx" />
               </div>
-              <span className="text-3xl font-bold font-heading">PODify</span>
+              <span className="text-3xl font-bold text-white">PODify</span>
             </div>
-            <p className="text-white/80 leading-relaxed">
-              Transform your creativity into premium products. We bring your designs to life with exceptional quality and fast delivery.
+            <p className="text-mist/70 leading-relaxed font-light text-base">
+              Transform your creativity into premium products. High-quality printing with exceptional service.
             </p>
-            <div className="flex space-x-4">
-              {[Facebook, Twitter, Instagram].map((Icon, index) => (
-                <motion.a
+            <div className="flex space-x-3">
+              {[
+                { Icon: Facebook, href: '#' },
+                { Icon: Twitter, href: '#' },
+                { Icon: Instagram, href: '#' }
+              ].map(({ Icon, href }, index) => (
+                <a
                   key={index}
-                  href="#"
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                  href={href}
+                  className="w-11 h-11 bg-carbon hover:bg-gold rounded-xl flex items-center justify-center transition-all duration-300 group"
                 >
-                  <Icon className="w-5 h-5" />
-                </motion.a>
+                  <Icon className="w-5 h-5 text-mist group-hover:text-onyx transition-colors" />
+                </a>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Quick Links */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h4 className="text-xl font-semibold font-heading">Explore</h4>
+          {/* Shop Links */}
+          <div className="space-y-6">
+            <h4 className="text-lg font-bold text-white">Shop</h4>
             <nav className="space-y-4">
               {[
                 { name: 'All Products', path: '/products' },
-                { name: 'Design Studio', path: '/customizer' },
-                { name: 'Collections', path: '/products?category=collections' },
-                { name: 'Best Sellers', path: '/products?sort=popular' }
+                { name: 'T-Shirts', path: '/products?category=tshirt' },
+                { name: 'Hoodies', path: '/products?category=hoodie' },
+                { name: 'Caps', path: '/products?category=cap' },
+                { name: 'Mugs', path: '/products?category=mug' }
               ].map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="block text-white/80 hover:text-white transition-colors group"
+                  className="block text-mist/70 hover:text-gold transition-colors group font-light"
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center gap-2">
                     <span>{item.name}</span>
-                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                   </div>
                 </Link>
               ))}
             </nav>
-          </motion.div>
+          </div>
 
-          {/* Customer Care */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h4 className="text-xl font-semibold font-heading">Support</h4>
+          {/* Support Links */}
+          <div className="space-y-6">
+            <h4 className="text-lg font-bold text-white">Support</h4>
             <nav className="space-y-4">
               {[
-                'Help Center',
-                'Size Guide',
-                'Shipping Info',
-                'Returns & Exchanges',
-                'Quality Promise',
-                'Contact Support'
+                { name: 'Help Center', path: '/help' },
+                { name: 'Size Guide', path: '/size-guide' },
+                { name: 'Shipping Info', path: '/shipping' },
+                { name: 'Returns', path: '/returns' },
+                { name: 'Contact Us', path: '/contact' }
               ].map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="block text-white/80 hover:text-white transition-colors group"
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className="block text-mist/70 hover:text-gold transition-colors group font-light"
                 >
-                  <div className="flex items-center space-x-2">
-                    <span>{item}</span>
-                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="flex items-center gap-2">
+                    <span>{item.name}</span>
+                    <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                   </div>
-                </a>
+                </Link>
               ))}
             </nav>
-          </motion.div>
+          </div>
 
           {/* Contact Info */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h4 className="text-xl font-semibold font-heading">Get in Touch</h4>
+          <div className="space-y-6">
+            <h4 className="text-lg font-bold text-white">Get in Touch</h4>
             <div className="space-y-4">
-              <div className="flex items-start space-x-3 text-white/80">
-                <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
+              <a href="mailto:hello@podify.com" className="flex items-start gap-3 text-mist/70 hover:text-gold transition-colors group font-light">
+                <Mail className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                <span>hello@podify.com</span>
+              </a>
+              <a href="tel:+15551234567" className="flex items-start gap-3 text-mist/70 hover:text-gold transition-colors group font-light">
+                <Phone className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                <span>+1 (555) 123-4567</span>
+              </a>
+              <div className="flex items-start gap-3 text-mist/70 font-light">
+                <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" />
                 <div>
                   <p>123 Creative Street</p>
                   <p>Design District, NY 10001</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3 text-white/80">
-                <Mail className="w-5 h-5 flex-shrink-0" />
-                <a href="mailto:hello@podify.com" className="hover:text-white transition-colors">
-                  hello@podify.com
-                </a>
-              </div>
-              <div className="flex items-center space-x-3 text-white/80">
-                <Phone className="w-5 h-5 flex-shrink-0" />
-                <a href="tel:+15551234567" className="hover:text-white transition-colors">
-                  +1 (555) 123-4567
-                </a>
-              </div>
             </div>
-
-            {/* Business Hours */}
-            <div className="bg-white/5 rounded-lg p-4">
-              <h5 className="font-medium mb-2">Business Hours</h5>
-              <div className="text-sm text-white/80 space-y-1">
-                <p>Mon - Fri: 9:00 AM - 6:00 PM</p>
-                <p>Saturday: 10:00 AM - 4:00 PM</p>
-                <p>Sunday: Closed</p>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Bottom Bar */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="py-8 border-t border-white/10"
-        >
-          <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
-            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-white/60">
+        <div className="py-8 border-t border-graphite">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col sm:flex-row items-center gap-6 text-sm text-mist/60 font-light">
               <p>© 2024 PODify. All rights reserved.</p>
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center gap-1">
                 <span>Made with</span>
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                >
-                  ❤️
-                </motion.div>
+                <span className="text-red-500">❤️</span>
                 <span>for creators</span>
               </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
-              {['Privacy Policy', 'Terms of Service', 'Cookies Policy'].map((item) => (
+            <div className="flex flex-wrap justify-center gap-8 text-sm">
+              {['Privacy Policy', 'Terms of Service', 'Cookies'].map((item) => (
                 <a
                   key={item}
                   href="#"
-                  className="text-white/60 hover:text-white transition-colors"
+                  className="text-mist/60 hover:text-gold transition-colors font-light"
                 >
                   {item}
                 </a>
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </footer>
   )

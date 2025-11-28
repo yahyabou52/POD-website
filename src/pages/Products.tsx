@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Filter, Search, Grid, List } from 'lucide-react'
 
@@ -41,10 +40,10 @@ export default function Products() {
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <h1 className="text-3xl md:text-4xl font-semibold text-onyx mb-4 tracking-tight">
           Our Products
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-carbon leading-relaxed">
           Browse our collection of high-quality products ready for your custom designs
         </p>
       </div>
@@ -54,12 +53,12 @@ export default function Products() {
         {/* Search */}
         <div className="flex-1">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-graphite h-4 w-4" />
             <Input
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-mist focus:border-onyx"
             />
           </div>
         </div>
@@ -86,38 +85,36 @@ export default function Products() {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Sidebar Filters */}
         <aside className="lg:w-64 space-y-6">
-          <Card>
-            <CardContent className="p-4">
-              <h3 className="font-semibold mb-4 flex items-center">
-                <Filter className="h-4 w-4 mr-2" />
-                Categories
-              </h3>
-              <div className="space-y-2">
-                {categories.map(category => (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                      selectedCategory === category.id
-                        ? 'bg-primary text-primary-foreground'
-                        : 'hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex justify-between items-center">
-                      <span>{category.name}</span>
-                      <span className="text-xs opacity-70">{category.count}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-2xl border border-mist shadow-sm p-6">
+            <h3 className="font-semibold text-onyx mb-4 flex items-center">
+              <Filter className="h-4 w-4 mr-2" />
+              Categories
+            </h3>
+            <div className="space-y-2">
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    selectedCategory === category.id
+                      ? 'bg-onyx text-white shadow-sm'
+                      : 'text-carbon hover:bg-mist'
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <span>{category.name}</span>
+                    <span className="text-xs opacity-70">{category.count}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         </aside>
 
         {/* Products Grid */}
         <div className="flex-1">
           <div className="mb-4 flex justify-between items-center">
-            <p className="text-muted-foreground">
+            <p className="text-carbon">
               {filteredProducts.length} products found
             </p>
           </div>
@@ -130,30 +127,29 @@ export default function Products() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -8 }}
                 >
-                  <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
-                    <CardContent className="p-0">
-                      <div className="aspect-square bg-gray-50 rounded-t-lg overflow-hidden flex items-center justify-center">
-                        <img 
-                          src={product.image} 
-                          alt={product.name}
-                          className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                        />
+                  <div className="group cursor-pointer bg-white rounded-2xl border border-mist hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                    <div className="aspect-square bg-gradient-to-br from-mist to-white overflow-hidden flex items-center justify-center">
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-500 opacity-70 group-hover:opacity-100"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="font-semibold text-onyx mb-2 tracking-tight">{product.name}</h3>
+                      <p className="text-sm text-graphite/80 mb-3">
+                        {product.colors} colors • {product.sizes} sizes
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <p className="text-onyx font-semibold text-xl">${product.price}</p>
+                        <Link to={`/product/${product.id}`}>
+                          <Button size="sm" className="font-medium">View Details</Button>
+                        </Link>
                       </div>
-                      <div className="p-4">
-                        <h3 className="font-semibold text-foreground mb-2">{product.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {product.colors} colors • {product.sizes} sizes
-                        </p>
-                        <div className="flex justify-between items-center">
-                          <p className="text-primary font-bold text-lg">${product.price}</p>
-                          <Link to={`/product/${product.id}`}>
-                            <Button size="sm">View Details</Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -166,31 +162,29 @@ export default function Products() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Card className="group cursor-pointer hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                          <img 
-                            src={product.image} 
-                            alt={product.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-foreground mb-1">{product.name}</h3>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {product.colors} colors • {product.sizes} sizes
-                          </p>
-                          <p className="text-primary font-bold">${product.price}</p>
-                        </div>
-                        <div>
-                          <Link to={`/product/${product.id}`}>
-                            <Button>View Details</Button>
-                          </Link>
-                        </div>
+                  <div className="group cursor-pointer bg-white rounded-2xl border border-mist hover:shadow-md hover:-translate-y-1 transition-all duration-300 p-6">
+                    <div className="flex items-center space-x-6">
+                      <div className="w-24 h-24 bg-gradient-to-br from-mist to-white rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center">
+                        <img 
+                          src={product.image} 
+                          alt={product.name}
+                          className="w-full h-full object-contain p-4 opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
+                        />
                       </div>
-                    </CardContent>
-                  </Card>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-onyx mb-1.5 tracking-tight">{product.name}</h3>
+                        <p className="text-sm text-graphite/80 mb-2">
+                          {product.colors} colors • {product.sizes} sizes
+                        </p>
+                        <p className="text-onyx font-semibold text-lg">${product.price}</p>
+                      </div>
+                      <div>
+                        <Link to={`/product/${product.id}`}>
+                          <Button className="font-medium">View Details</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -198,7 +192,7 @@ export default function Products() {
 
           {filteredProducts.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
+              <p className="text-carbon text-lg">No products found matching your criteria.</p>
               <Button 
                 variant="outline" 
                 className="mt-4"
