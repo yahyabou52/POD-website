@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, Sparkles, ArrowRight } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, ArrowRight } from 'lucide-react'
+import PrintelyaLogo from '@/assets/printelya logo.svg'
 
 export default function Footer() {
   return (
@@ -9,11 +10,12 @@ export default function Footer() {
         <div className="py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Info */}
           <div className="space-y-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-gold to-amber rounded-xl flex items-center justify-center shadow-lg">
-                <Sparkles className="w-7 h-7 text-onyx" />
-              </div>
-              <span className="text-3xl font-bold text-white">Printelya</span>
+            <div className="flex items-center">
+              <img 
+                src={PrintelyaLogo} 
+                alt="Printelya" 
+                className="h-12 w-auto brightness-0 invert"
+              />
             </div>
             <p className="text-mist/70 leading-relaxed font-light text-base">
               Transform your creativity into premium products. High-quality printing with exceptional service.

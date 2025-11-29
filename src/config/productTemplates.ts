@@ -12,11 +12,11 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 19.99,
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.png' },
-      { name: 'Navy', hex: '#1E3A8A', image: '/templates/tshirt-navy.png' },
-      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.png' },
-      { name: 'Red', hex: '#DC2626', image: '/templates/tshirt-red.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.svg' },
+      { name: 'Navy', hex: '#1E3A8A', image: '/templates/tshirt-navy.svg' },
+      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.svg' },
+      { name: 'Red', hex: '#DC2626', image: '/templates/tshirt-red.svg' },
     ],
     printAreas: {
       front: { 
@@ -44,10 +44,10 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 22.99,
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.png' },
-      { name: 'Navy', hex: '#1E3A8A', image: '/templates/tshirt-navy.png' },
-      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.svg' },
+      { name: 'Navy', hex: '#1E3A8A', image: '/templates/tshirt-navy.svg' },
+      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.svg' },
     ],
     printAreas: {
       front: { 
@@ -83,9 +83,9 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 24.99,
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.png' },
-      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.svg' },
+      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.svg' },
     ],
     printAreas: {
       front: { 
@@ -113,9 +113,9 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 27.99,
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.png' },
-      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/tshirt-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/tshirt-black.svg' },
+      { name: 'Gray', hex: '#6B7280', image: '/templates/tshirt-gray.svg' },
     ],
     printAreas: {
       front: { 
@@ -150,10 +150,10 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 39.99,
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/hoodie-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/hoodie-black.png' },
-      { name: 'Gray', hex: '#6B7280', image: '/templates/hoodie-gray.png' },
-      { name: 'Navy', hex: '#1E3A8A', image: '/templates/hoodie-navy.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/hoodie-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/hoodie-black.svg' },
+      { name: 'Gray', hex: '#6B7280', image: '/templates/hoodie-gray.svg' },
+      { name: 'Navy', hex: '#1E3A8A', image: '/templates/hoodie-navy.svg' },
     ],
     printAreas: {
       front: { 
@@ -192,9 +192,9 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 44.99,
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/hoodie-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/hoodie-black.png' },
-      { name: 'Gray', hex: '#6B7280', image: '/templates/hoodie-gray.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/hoodie-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/hoodie-black.svg' },
+      { name: 'Gray', hex: '#6B7280', image: '/templates/hoodie-gray.svg' },
     ],
     printAreas: {
       front: { 
@@ -233,10 +233,10 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 24.99,
     sizes: ['One Size', 'Youth', 'Adult'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/cap-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/cap-black.png' },
-      { name: 'Navy', hex: '#1E3A8A', image: '/templates/cap-navy.png' },
-      { name: 'Red', hex: '#DC2626', image: '/templates/cap-red.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/cap-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/cap-black.svg' },
+      { name: 'Navy', hex: '#1E3A8A', image: '/templates/cap-navy.svg' },
+      { name: 'Red', hex: '#DC2626', image: '/templates/cap-red.svg' },
     ],
     printAreas: {
       front: { 
@@ -263,10 +263,10 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 26.99,
     sizes: ['One Size', 'Youth', 'Adult'],
     colors: [
-      { name: 'White/Black', hex: '#FFFFFF', image: '/templates/cap-white.png' },
-      { name: 'Black/White', hex: '#000000', image: '/templates/cap-black.png' },
-      { name: 'Navy/White', hex: '#1E3A8A', image: '/templates/cap-navy.png' },
-      { name: 'Red/White', hex: '#DC2626', image: '/templates/cap-red.png' },
+      { name: 'White/Black', hex: '#FFFFFF', image: '/templates/cap-white.svg' },
+      { name: 'Black/White', hex: '#000000', image: '/templates/cap-black.svg' },
+      { name: 'Navy/White', hex: '#1E3A8A', image: '/templates/cap-navy.svg' },
+      { name: 'Red/White', hex: '#DC2626', image: '/templates/cap-red.svg' },
     ],
     printAreas: {
       front: { 
@@ -293,9 +293,9 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 14.99,
     sizes: ['11oz', '15oz'],
     colors: [
-      { name: 'White', hex: '#FFFFFF', image: '/templates/mug-white.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/mug-black.png' },
-      { name: 'Blue', hex: '#3B82F6', image: '/templates/mug-blue.png' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/mug-white.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/mug-black.svg' },
+      { name: 'Blue', hex: '#3B82F6', image: '/templates/mug-blue.svg' },
     ],
     printAreas: {
       front: { 
@@ -322,9 +322,9 @@ export const PRODUCT_TEMPLATES: Record<string, ProductTemplate> = {
     basePrice: 19.99,
     sizes: ['16oz', '20oz'],
     colors: [
-      { name: 'Stainless', hex: '#C0C0C0', image: '/templates/mug-steel.png' },
-      { name: 'Black', hex: '#000000', image: '/templates/mug-black.png' },
-      { name: 'White', hex: '#FFFFFF', image: '/templates/mug-white.png' },
+      { name: 'Stainless', hex: '#C0C0C0', image: '/templates/mug-steel.svg' },
+      { name: 'Black', hex: '#000000', image: '/templates/mug-black.svg' },
+      { name: 'White', hex: '#FFFFFF', image: '/templates/mug-white.svg' },
     ],
     printAreas: {
       front: { 

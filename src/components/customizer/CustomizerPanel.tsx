@@ -18,6 +18,7 @@ import {
   Maximize,
   Search,
 } from 'lucide-react'
+import PrintelyaLogo from '@/assets/printelya logo.svg'
 
 export default function ControlPanel() {
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -157,7 +158,13 @@ export default function ControlPanel() {
     <div className="bg-white rounded-2xl border border-mist shadow-md h-full flex flex-col">
       {/* Header */}
       <div className="p-6 border-b border-mist">
-        <h2 className="text-xl font-semibold text-onyx mb-2 tracking-tight">Design Studio</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <img 
+            src={PrintelyaLogo} 
+            alt="Printelya" 
+            className="h-8 w-auto"
+          />
+        </div>
         <p className="text-sm text-carbon">Customize your {product.name}</p>
       </div>
 

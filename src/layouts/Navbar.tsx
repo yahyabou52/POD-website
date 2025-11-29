@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
-import { ShoppingCart, Search, Menu, X, Sparkles } from 'lucide-react'
+import { ShoppingCart, Search, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useCartStore } from '@/store/cart'
 import { useAuthStore } from '@/store/auth'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import PrintelyaLogo from '@/assets/printelya logo.svg'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -28,12 +29,11 @@ export default function Navbar() {
             whileHover={{ scale: 1.05 }}
           >
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-onyx to-carbon rounded-xl flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-onyx font-heading">
-                Printelya
-              </span>
+              <img 
+                src={PrintelyaLogo} 
+                alt="Printelya" 
+                className="h-10 w-auto"
+              />
             </Link>
           </motion.div>
 

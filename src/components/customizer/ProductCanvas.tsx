@@ -11,7 +11,6 @@ export default function ProductCanvas() {
   const {
     productId,
     currentSide,
-    selectedColor,
     designs,
     selectedElementId,
     gridEnabled,
@@ -28,7 +27,6 @@ export default function ProductCanvas() {
   const template = PRODUCT_TEMPLATES[productId]
   const printArea = template?.printAreas[currentSide]
   const currentDesigns = designs[currentSide] || []
-  const selectedColorData = template?.colors.find((c) => c.name === selectedColor)
 
   const gridSize = 20
 
@@ -160,14 +158,7 @@ export default function ProductCanvas() {
             }
           }}
         >
-          {/* Product mockup background */}
-          {selectedColorData?.image && (
-            <img
-              src={selectedColorData.image}
-              alt={`${template.name} - ${selectedColor}`}
-              className="absolute inset-0 w-full h-full object-cover rounded-xl pointer-events-none"
-            />
-          )}
+          {/* Product mockup background - Removed templates */}
 
           {/* Grid overlay */}
           {gridEnabled && (
