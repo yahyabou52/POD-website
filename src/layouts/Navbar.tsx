@@ -32,7 +32,7 @@ export default function Navbar() {
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold text-onyx font-heading">
-                PODify
+                Printelya
               </span>
             </Link>
           </motion.div>

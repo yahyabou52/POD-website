@@ -13,7 +13,7 @@ export default function Footer() {
               <div className="w-12 h-12 bg-gradient-to-br from-gold to-amber rounded-xl flex items-center justify-center shadow-lg">
                 <Sparkles className="w-7 h-7 text-onyx" />
               </div>
-              <span className="text-3xl font-bold text-white">PODify</span>
+              <span className="text-3xl font-bold text-white">Printelya</span>
             </div>
             <p className="text-mist/70 leading-relaxed font-light text-base">
               Transform your creativity into premium products. High-quality printing with exceptional service.
@@ -89,9 +89,9 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-lg font-bold text-white">Get in Touch</h4>
             <div className="space-y-4">
-              <a href="mailto:hello@podify.com" className="flex items-start gap-3 text-mist/70 hover:text-gold transition-colors group font-light">
+              <a href="mailto:hello@printelya.com" className="flex items-start gap-3 text-mist/70 hover:text-gold transition-colors group font-light">
                 <Mail className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                <span>hello@podify.com</span>
+                <span>hello@printelya.com</span>
               </a>
               <a href="tel:+15551234567" className="flex items-start gap-3 text-mist/70 hover:text-gold transition-colors group font-light">
                 <Phone className="w-5 h-5 mt-0.5 flex-shrink-0" />
@@ -112,7 +112,7 @@ export default function Footer() {
         <div className="py-8 border-t border-graphite">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-6 text-sm text-mist/60 font-light">
-              <p>© 2024 PODify. All rights reserved.</p>
+              <p>© 2024 Printelya. All rights reserved.</p>
               <div className="flex items-center gap-1">
                 <span>Made with</span>
                 <span className="text-red-500">❤️</span>

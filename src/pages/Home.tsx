@@ -241,7 +241,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold font-heading text-gray-900 mb-6">
-              Why Creators Choose PODify
+              Why Creators Choose Printelya
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               We've built the most advanced and user-friendly platform for bringing your creative visions to life with professional quality and lightning-fast delivery.
@@ -291,7 +291,7 @@ export default function Home() {
               Ready to Create Something Amazing?
             </h2>
             <p className="text-xl text-white/90 mb-10 leading-relaxed">
-              Join over 50,000 creators who trust PODify to bring their designs to life. Start your creative journey today with our free design tools and premium products.
+              Join over 50,000 creators who trust Printelya to bring their designs to life. Start your creative journey today with our free design tools and premium products.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/register">

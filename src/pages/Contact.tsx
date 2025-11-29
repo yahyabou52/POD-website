@@ -41,7 +41,7 @@ export default function Contact() {
     },
     {
       question: 'Do you offer bulk pricing?',
-      answer: 'Yes! We offer discounts for bulk orders. Contact us at support@podify.com for custom pricing on orders of 50+ items.'
+      answer: 'Yes! We offer discounts for bulk orders. Contact us at support@printelya.com for custom pricing on orders of 50+ items.'
     },
     {
       question: 'Can I customize my own design?',
@@ -94,8 +94,8 @@ export default function Contact() {
                 <Mail className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-lg font-semibold text-onyx mb-3 tracking-tight">Email Support</h3>
-              <a href="mailto:support@podify.com" className="text-base text-graphite hover:text-gold transition-colors block mb-2">
-                support@podify.com
+              <a href="mailto:support@printelya.com" className="text-base text-graphite hover:text-gold transition-colors block mb-2">
+                support@printelya.com
               </a>
               <p className="text-sm text-graphite/80">Response within 24 hours</p>
             </motion.div>

@@ -2,7 +2,7 @@ export default function SimpleHome() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-6xl font-bold text-black mb-8">PODify</h1>
+        <h1 className="text-6xl font-bold text-black mb-8">Printelya</h1>
         <p className="text-2xl text-gray-600 mb-8">
           This is a test to see if TailwindCSS is working
         </p>

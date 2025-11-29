@@ -73,7 +73,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Why We Created PODify */}
+      {/* Why We Created Printelya */}
       <section className="py-32 bg-gradient-to-b from-mist to-white">
         <div className="container mx-auto px-6 md:px-12">
           <motion.div
@@ -91,12 +91,12 @@ export default function About() {
               </div>
 
               <h2 className="text-3xl md:text-4xl font-semibold text-onyx mb-8 text-center tracking-tight">
-                Why We Created PODify
+                Why We Created Printelya
               </h2>
 
               <div className="space-y-6 text-base text-graphite leading-relaxed">
                 <p>
-                  PODify was born from a simple frustration: creating custom products shouldn't be complicated, 
+                  Printelya was born from a simple frustration: creating custom products shouldn't be complicated, 
                   expensive, or limited to large orders.
                 </p>
                 <p>
@@ -266,7 +266,7 @@ export default function About() {
               Something Amazing?
             </h2>
             <p className="text-lg text-carbon mb-12 leading-relaxed">
-              Join thousands of creators who trust PODify to bring their designs to life
+              Join thousands of creators who trust Printelya to bring their designs to life
             </p>
             <Link to="/customizer">
               <Button 

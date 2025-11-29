@@ -5,7 +5,7 @@ export default function MinimalHome() {
       <div className="bg-gray-50 py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-6xl font-bold text-black mb-6">
-            PODify
+            Printelya
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Create and sell custom products with our print-on-demand platform
@@ -24,7 +24,7 @@ export default function MinimalHome() {
       {/* Features Section */}
       <div className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Why Choose PODify?</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">Why Choose Printelya?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
