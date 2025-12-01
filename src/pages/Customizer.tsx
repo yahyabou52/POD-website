@@ -7,8 +7,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, Settings } from 'lucide-react'
 import type { ProductSelection } from '@/types/customizer'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 function Customizer() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const [showWizard, setShowWizard] = useState(true)
   const [showChangeProduct, setShowChangeProduct] = useState(false)
   const { productId, setProductFromSelection, undo, redo, canUndo, canRedo } = useCustomizerStore()
@@ -17,6 +20,15 @@ function Customizer() {
     setProductFromSelection(selection)
     setShowWizard(false)
     setShowChangeProduct(false)
+  }
+
+  const handleModalClose = () => {
+    if (location.state?.from) {
+      navigate(location.state.from)
+    } else {
+      setShowWizard(false)
+      setShowChangeProduct(false)
+    }
   }
 
   // Keyboard shortcuts
@@ -126,10 +138,7 @@ function Customizer() {
         {(showWizard || showChangeProduct) && (
           <ProductWizard
             onComplete={handleWizardComplete}
-            onCancel={() => {
-              if (!productId) return
-              setShowChangeProduct(false)
-            }}
+            onCancel={handleModalClose}
           />
         )}
       </AnimatePresence>
