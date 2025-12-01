@@ -1,60 +1,87 @@
-import { create } from 'zustand'
+// src/store/auth.ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-export interface User {
-  id: string
-  email: string
-  name: string
-  avatar?: string
-}
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+};
 
-interface AuthStore {
-  user: User | null
-  isAuthenticated: boolean
-  isLoading: boolean
-  login: (email: string, password: string) => Promise<void>
-  register: (email: string, password: string, name: string) => Promise<void>
-  logout: () => void
-  setUser: (user: User | null) => void
-}
+type AuthState = {
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+  error?: string | null;
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
+  logout: () => void;
+  setUserFromStorage: () => void;
+  loadFromStorage: () => void;
+};
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  isAuthenticated: false,
-  isLoading: false,
-  login: async (email: string, password: string) => {
-    set({ isLoading: true })
-    try {
-      // TODO: Implement actual login API call
-      console.log('Login:', { email, password })
-      // Mock successful login
-      setTimeout(() => {
-        const mockUser = { id: '1', email, name: 'John Doe' }
-        set({ user: mockUser, isAuthenticated: true, isLoading: false })
-      }, 1000)
-    } catch (error) {
-      set({ isLoading: false })
-      throw error
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      user: null,
+      token: null,
+      loading: false,
+      error: null,
+      isAuthenticated: false,
+
+      login: async (email, password) => {
+        set({ loading: true, error: null });
+        try {
+          // mock async auth — replace with axios POST later
+          await new Promise((r) => setTimeout(r, 600));
+          // naive mock validation
+          if (!email || !password) throw new Error('Invalid credentials');
+
+          const mockUser = { id: 'u_' + Date.now(), name: 'Demo User', email };
+          const mockToken = 'mock-token-' + Date.now();
+
+          set({ user: mockUser, token: mockToken, isAuthenticated: true, loading: false });
+        } catch (err: any) {
+          set({ error: err?.message ?? 'Login failed', loading: false });
+          throw err;
+        }
+      },
+
+      register: async (name, email, password) => {
+        set({ loading: true, error: null });
+        try {
+          await new Promise((r) => setTimeout(r, 700));
+          if (!name || !email || !password) throw new Error('Missing fields');
+          const mockUser = { id: 'u_' + Date.now(), name, email };
+          const mockToken = 'mock-token-' + Date.now();
+          set({ user: mockUser, token: mockToken, isAuthenticated: true, loading: false });
+        } catch (err: any) {
+          set({ error: err?.message ?? 'Register failed', loading: false });
+          throw err;
+        }
+      },
+
+      logout: () => {
+        set({ user: null, token: null, isAuthenticated: false });
+      },
+
+      setUserFromStorage: () => {
+        const s = (get as any).__store?.getState?.(); // not standard; we rely on persist middleware saving
+        // persist middleware will rehydrate automatically; we keep API for future use
+      },
+
+      loadFromStorage: () => {
+        const storedAuth = localStorage.getItem('auth-storage');
+        if (storedAuth) {
+          const { user, token, isAuthenticated } = JSON.parse(storedAuth);
+          set({ user, token, isAuthenticated });
+        }
+      },
+    }),
+    {
+      name: 'auth-storage', // localStorage key
+      partialize: (state) => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
     }
-  },
-  register: async (email: string, password: string, name: string) => {
-    set({ isLoading: true })
-    try {
-      // TODO: Implement actual register API call
-      console.log('Register:', { email, password, name })
-      // Mock successful registration
-      setTimeout(() => {
-        const mockUser = { id: '1', email, name }
-        set({ user: mockUser, isAuthenticated: true, isLoading: false })
-      }, 1000)
-    } catch (error) {
-      set({ isLoading: false })
-      throw error
-    }
-  },
-  logout: () => {
-    set({ user: null, isAuthenticated: false })
-  },
-  setUser: (user) => {
-    set({ user, isAuthenticated: !!user })
-  }
-}))
+  )
+);

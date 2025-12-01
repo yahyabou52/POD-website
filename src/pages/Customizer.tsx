@@ -6,8 +6,9 @@ import { useCustomizerStore } from '@/store/customizer'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, Settings } from 'lucide-react'
 import type { ProductSelection } from '@/types/customizer'
+import ErrorBoundary from '@/components/ui/ErrorBoundary'
 
-export default function Customizer() {
+function Customizer() {
   const [showWizard, setShowWizard] = useState(true)
   const [showChangeProduct, setShowChangeProduct] = useState(false)
   const { productId, setProductFromSelection, undo, redo, canUndo, canRedo } = useCustomizerStore()
@@ -133,5 +134,13 @@ export default function Customizer() {
         )}
       </AnimatePresence>
     </div>
+  )
+}
+
+export default function CustomizerPage() {
+  return (
+    <ErrorBoundary>
+      <Customizer />
+    </ErrorBoundary>
   )
 }

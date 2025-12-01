@@ -180,6 +180,19 @@ function ToastComponent({ id, type, title, message, action, onClose }: ToastProp
   )
 }
 
+// Toast item component
+export function ToastItem({ toast }: { toast: Toast }) {
+  return (
+    <div className="rounded-xl bg-white shadow-lg p-4 border w-full max-w-sm animate-in fade-in slide-in-from-right-5">
+      {toast.title && <p className="font-semibold">{toast.title}</p>}
+      {toast.message && (
+        <p className="text-sm text-gray-600 mt-1">{toast.message}</p>
+      )}
+      {toast.action && <div className="mt-2">{toast.action}</div>}
+    </div>
+  )
+}
+
 // Toast container
 export function ToastContainer() {
   const { toasts } = useToast()
