@@ -6,6 +6,17 @@ export type SleeveType = 'short' | 'full'
 export type CapType = 'baseball' | 'trucker'
 export type MugType = 'ceramic' | 'travel'
 
+export interface ProductView {
+  mockup: string
+  mask?: string
+  area: {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
+}
+
 export interface ProductTemplate {
   id: string
   type: ProductType
@@ -19,12 +30,20 @@ export interface ProductTemplate {
   colors: ProductColor[]
   sizes: string[]
   printAreas: Record<ProductSide, PrintArea>
+  views: Record<ProductSide, ProductView>
 }
 
 export interface ProductColor {
   name: string
   hex: string
   image: string
+  mockups?: {
+    front?: string
+    back?: string
+    'left-sleeve'?: string
+    'right-sleeve'?: string
+    hood?: string
+  }
 }
 
 export interface PrintArea {
@@ -50,6 +69,7 @@ export interface DesignElement {
   height: number
   scaleX: number
   scaleY: number
+  rotation: number // in degrees
   locked: boolean
   zIndex: number
 }

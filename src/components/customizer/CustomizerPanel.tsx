@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { useCustomizerStore } from '@/store/customizer'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
 import { Button } from '@/components/ui/button'
+import FileUploadEnhanced from './FileUploadEnhanced'
 import {
   Upload,
   Trash2,
@@ -9,8 +10,6 @@ import {
   Lock,
   Unlock,
   Layers,
-  MoveUp,
-  MoveDown,
   Undo,
   Redo,
   RefreshCw,
@@ -58,9 +57,7 @@ export default function ControlPanel() {
   const selectedDesign = currentDesigns.find((d) => d.id === selectedElementId)
 
   // File upload handler
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-    
+  const handleFileSelect = (files: File[]) => {
     files.forEach((file) => {
       if (!file.type.startsWith('image/')) return
 
@@ -90,6 +87,7 @@ export default function ControlPanel() {
             height,
             scaleX: 1,
             scaleY: 1,
+            rotation: 0,
             locked: false,
           })
         }
@@ -97,10 +95,6 @@ export default function ControlPanel() {
       }
       reader.readAsDataURL(file)
     })
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
   }
 
   // Library designs - Example designs
@@ -257,27 +251,12 @@ export default function ControlPanel() {
         {/* Upload Tab */}
         {activeTab === 'upload' && (
           <div className="space-y-4">
-            <input
-              ref={fileInputRef}
-              type="file"
+            <FileUploadEnhanced
+              onFileSelect={handleFileSelect}
               accept="image/*"
-              multiple
-              onChange={handleFileSelect}
-              className="hidden"
+              multiple={true}
+              maxSize={10}
             />
-            
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="w-full h-32 border-2 border-dashed border-carbon hover:border-gold hover:bg-gold/5 rounded-xl transition-all duration-300 flex flex-col items-center justify-center gap-2 text-graphite hover:text-gold"
-            >
-              <Upload className="w-8 h-8" />
-              <span className="font-medium">Upload Your Design</span>
-              <span className="text-xs">PNG, JPG, SVG supported</span>
-            </button>
-
-            <div className="text-xs text-center text-graphite/70">
-              Drag & drop directly on canvas or click to browse
-            </div>
           </div>
         )}
 
@@ -380,25 +359,10 @@ export default function ControlPanel() {
                       variant="outline"
                       size="sm"
                       onClick={() => updateDesign(selectedDesign.id, { locked: !selectedDesign.locked })}
-                      className="text-xs"
+                      className="text-xs col-span-2"
                     >
                       {selectedDesign.locked ? <Unlock className="w-3 h-3 mr-1.5" /> : <Lock className="w-3 h-3 mr-1.5" />}
                       {selectedDesign.locked ? 'Unlock' : 'Lock'}
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Layering */}
-                <div>
-                  <label className="text-sm font-medium text-graphite mb-3 block">Layer Order</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button variant="outline" size="sm" onClick={() => bringToFront(selectedDesign.id)} className="text-xs">
-                      <MoveUp className="w-3 h-3 mr-1.5" />
-                      Bring Front
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={() => sendToBack(selectedDesign.id)} className="text-xs">
-                      <MoveDown className="w-3 h-3 mr-1.5" />
-                      Send Back
                     </Button>
                   </div>
                 </div>

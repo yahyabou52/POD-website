@@ -21,6 +21,7 @@ interface CustomizerStore extends CanvasState {
   updateDesign: (id: string, updates: Partial<DesignElement>) => void
   deleteDesign: (id: string) => void
   selectElement: (id: string | null) => void
+  setSelectedElement: (id: string | null) => void
   duplicateDesign: (id: string) => void
   bringToFront: (id: string) => void
   sendToBack: (id: string) => void
@@ -159,6 +160,14 @@ export const useCustomizerStore = create<CustomizerStore>((set, get) => ({
         ),
       },
     })
+    
+    // Save to history for significant changes
+    if (updates.x !== undefined || updates.y !== undefined || 
+        updates.width !== undefined || updates.height !== undefined ||
+        updates.rotation !== undefined || updates.scaleX !== undefined ||
+        updates.locked !== undefined) {
+      get().saveToHistory()
+    }
   },
 
   deleteDesign: (id) => {
@@ -174,6 +183,10 @@ export const useCustomizerStore = create<CustomizerStore>((set, get) => ({
   },
 
   selectElement: (id) => {
+    set({ selectedElementId: id })
+  },
+
+  setSelectedElement: (id) => {
     set({ selectedElementId: id })
   },
 

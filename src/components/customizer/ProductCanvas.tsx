@@ -1,12 +1,14 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Rnd } from 'react-rnd'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Trash2, Copy, ZoomIn, ZoomOut } from 'lucide-react'
+import { Trash2, Copy, ZoomIn, ZoomOut, Eye } from 'lucide-react'
 import { useCustomizerStore } from '@/store/customizer'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
+import PreviewModal from './PreviewModal'
 
 export default function ProductCanvas() {
   const canvasRef = useRef<HTMLDivElement>(null)
+  const [previewOpen, setPreviewOpen] = useState(false)
   
   const {
     productId,
@@ -119,25 +121,37 @@ export default function ProductCanvas() {
           </div>
         </div>
 
-        {/* Zoom controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {/* Preview Button */}
           <button
-            onClick={() => setZoom(zoom - 0.1)}
-            disabled={zoom <= 0.5}
-            className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => setPreviewOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-900 to-slate-700 hover:from-slate-800 hover:to-slate-600 text-white rounded-lg transition-all shadow-sm hover:shadow-md font-medium"
+            title="Preview Design"
           >
-            <ZoomOut size={20} />
+            <Eye size={18} />
+            <span className="text-sm">Preview</span>
           </button>
-          <span className="text-sm font-medium w-16 text-center">
-            {Math.round(zoom * 100)}%
-          </span>
-          <button
-            onClick={() => setZoom(zoom + 0.1)}
-            disabled={zoom >= 2}
-            className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ZoomIn size={20} />
-          </button>
+
+          {/* Zoom controls */}
+          <div className="flex items-center gap-2 border-l border-gray-200 pl-3">
+            <button
+              onClick={() => setZoom(zoom - 0.1)}
+              disabled={zoom <= 0.5}
+              className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ZoomOut size={20} />
+            </button>
+            <span className="text-sm font-medium w-16 text-center">
+              {Math.round(zoom * 100)}%
+            </span>
+            <button
+              onClick={() => setZoom(zoom + 0.1)}
+              disabled={zoom >= 2}
+              className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ZoomIn size={20} />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -226,6 +240,10 @@ export default function ProductCanvas() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="w-full h-full relative"
+                    style={{
+                      transform: `rotate(${design.rotation || 0}deg)`,
+                      transformOrigin: 'center',
+                    }}
                   >
                     {design.type === 'image' && (
                       <img
@@ -293,6 +311,15 @@ export default function ProductCanvas() {
           )}
         </div>
       </div>
+
+      {/* Preview Modal */}
+      <PreviewModal
+        isOpen={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+        product={template}
+        currentSide={currentSide}
+        designs={designs}
+      />
     </div>
   )
 }
