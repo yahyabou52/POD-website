@@ -1,5 +1,5 @@
 // src/pages/Login.tsx
-import React from 'react';
+
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,8 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { LockClosedIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
-import { FaApple, FaGoogle, FaGithub } from 'react-icons/fa';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email'),
@@ -23,7 +21,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
   const loading = useAuthStore((s) => s.loading);
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
   const { register, handleSubmit, formState } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -32,10 +30,10 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     try {
       await login(data.email, data.password);
-      toast({ title: 'Login successful', description: 'Welcome back!', status: 'success' });
+      addToast({ title: 'Login successful', description: 'Welcome back!' });
       navigate('/'); // redirect after login
     } catch (err) {
-      toast({ title: 'Login failed', description: (err as any)?.message ?? 'An error occurred', status: 'error' });
+      addToast({ title: 'Login failed', description: (err as any)?.message ?? 'An error occurred' });
     }
   };
 
@@ -53,7 +51,6 @@ export default function LoginPage() {
               {...register('email')}
               placeholder="you@example.com"
               aria-label="Email"
-              icon={<FaGoogle className="w-5 h-5 text-gray-400" />}
             />
             {formState.errors.email && <p className="text-red-500 text-sm mt-1">{formState.errors.email.message}</p>}
           </div>
@@ -65,7 +62,6 @@ export default function LoginPage() {
               type="password"
               placeholder="••••••••"
               aria-label="Password"
-              icon={<LockClosedIcon className="w-5 h-5 text-gray-400" />}
             />
             {formState.errors.password && <p className="text-red-500 text-sm mt-1">{formState.errors.password.message}</p>}
           </div>
@@ -80,18 +76,7 @@ export default function LoginPage() {
         </form>
 
         <div className="my-6 text-center text-sm text-gray-500">Or continue with</div>
-        <OAuthButtons
-          providers={[{
-            name: 'Google',
-            icon: <FaGoogle className="w-5 h-5" />
-          }, {
-            name: 'Apple',
-            icon: <FaApple className="w-5 h-5" />
-          }, {
-            name: 'GitHub',
-            icon: <FaGithub className="w-5 h-5" />
-          }]}
-        />
+        <OAuthButtons />
 
         <div className="mt-6 text-sm text-center">
           <a className="text-blue-600 hover:underline" href="/reset-password">Forgot password?</a>

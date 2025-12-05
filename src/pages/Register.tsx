@@ -1,5 +1,5 @@
 // src/pages/Register.tsx
-import React from 'react';
+
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { LockClosedIcon, UserIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
-import { FaApple, FaGoogle, FaGithub } from 'react-icons/fa';
 import OAuthButtons from '@/components/ui/OAuthButtons';
 
 const registerSchema = z
@@ -28,9 +26,9 @@ type RegisterForm = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const register = useAuthStore((s) => s.register);
+  const register_user = useAuthStore((s) => s.register);
   const loading = useAuthStore((s) => s.loading);
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
   const { register: rf, handleSubmit, formState } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
@@ -38,11 +36,11 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterForm) => {
     try {
-      await register(data.name, data.email, data.password);
-      toast({ title: 'Registration successful', description: 'You can now log in!', status: 'success' });
+      await register_user(data.name, data.email, data.password);
+      addToast({ title: 'Registration successful', description: 'You can now log in!' });
       navigate('/');
     } catch (err) {
-      toast({ title: 'Registration failed', description: (err as any)?.message ?? 'An error occurred', status: 'error' });
+      addToast({ title: 'Registration failed', description: (err as any)?.message ?? 'An error occurred' });
     }
   };
 
@@ -59,7 +57,6 @@ export default function RegisterPage() {
             <Input
               {...rf('name')}
               placeholder="Your name"
-              icon={<UserIcon className="w-5 h-5 text-gray-400" />}
             />
             {formState.errors.name && <p className="text-red-500 text-sm mt-1">{formState.errors.name.message}</p>}
           </div>
@@ -68,7 +65,6 @@ export default function RegisterPage() {
             <Input
               {...rf('email')}
               placeholder="you@example.com"
-              icon={<EnvelopeIcon className="w-5 h-5 text-gray-400" />}
             />
             {formState.errors.email && <p className="text-red-500 text-sm mt-1">{formState.errors.email.message}</p>}
           </div>
@@ -78,7 +74,6 @@ export default function RegisterPage() {
               {...rf('password')}
               type="password"
               placeholder="••••••••"
-              icon={<LockClosedIcon className="w-5 h-5 text-gray-400" />}
             />
             {formState.errors.password && <p className="text-red-500 text-sm mt-1">{formState.errors.password.message}</p>}
           </div>
@@ -88,7 +83,6 @@ export default function RegisterPage() {
               {...rf('confirm')}
               type="password"
               placeholder="••••••••"
-              icon={<LockClosedIcon className="w-5 h-5 text-gray-400" />}
             />
             {formState.errors.confirm && <p className="text-red-500 text-sm mt-1">{formState.errors.confirm.message}</p>}
           </div>
@@ -110,18 +104,7 @@ export default function RegisterPage() {
         </div>
 
         <div className="mt-8">
-          <OAuthButtons
-            providers={[{
-              name: 'Google',
-              icon: <FaGoogle className="w-5 h-5" />
-            }, {
-              name: 'Apple',
-              icon: <FaApple className="w-5 h-5" />
-            }, {
-              name: 'GitHub',
-              icon: <FaGithub className="w-5 h-5" />
-            }]}
-          />
+          <OAuthButtons />
         </div>
       </div>
     </div>

@@ -22,15 +22,15 @@ const ResetPassword: React.FC = () => {
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
-  const onSubmit = async (data: ResetPasswordFormValues) => {
+  const onSubmit = async (_data: ResetPasswordFormValues) => {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast({ title: 'Email Sent', description: 'Check your inbox for reset instructions.', status: 'success' });
+      addToast({ title: 'Email Sent', description: 'Check your inbox for reset instructions.' });
     } catch (error) {
-      toast({ title: 'Error', description: 'Failed to send reset email.', status: 'error' });
+      addToast({ title: 'Error', description: 'Failed to send reset email.' });
     }
   };
 

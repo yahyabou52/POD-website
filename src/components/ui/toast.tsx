@@ -188,7 +188,18 @@ export function ToastItem({ toast }: { toast: Toast }) {
       {toast.message && (
         <p className="text-sm text-gray-600 mt-1">{toast.message}</p>
       )}
-      {toast.action && <div className="mt-2">{toast.action}</div>}
+      {toast.action && (
+        <div className="mt-2">
+          <Button
+            size="sm"
+            variant="ghost"
+            className="text-xs font-medium p-1 h-auto"
+            onClick={toast.action.onClick}
+          >
+            {toast.action.label}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

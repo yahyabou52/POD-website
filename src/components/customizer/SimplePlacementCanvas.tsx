@@ -1,8 +1,10 @@
 import { useRef, useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import type { ProductSide, ProductType } from '@/types/customizer'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
 import { getPrintArea, calculateFitDimensions, getMockupPath } from '@/config/printAreas'
+import { useCustomizerStore, type Placement } from '@/store/customizerStore'
+import FloatingToolbar from './FloatingToolbar'
 
 interface SimplePlacementCanvasProps {
   productId: string
@@ -12,6 +14,8 @@ interface SimplePlacementCanvasProps {
   selectedPlacement: string | null
   scale: number
   onCanvasReady?: (canvas: HTMLCanvasElement) => void
+  // T4-A: Optional flag to enable multi-placement rendering
+  useMultiPlacement?: boolean
 }
 
 export default function SimplePlacementCanvas({
@@ -22,10 +26,27 @@ export default function SimplePlacementCanvas({
   selectedPlacement,
   scale,
   onCanvasReady,
+  useMultiPlacement = false,
 }: SimplePlacementCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [mockupDimensions, setMockupDimensions] = useState({ width: 800, height: 1000 })
+  const [placementBounds, setPlacementBounds] = useState<Array<{
+    id: string
+    x: number
+    y: number
+    width: number
+    height: number
+  }>>([])
+
+  // T4-A: Get placements from store for multi-placement mode
+  const placements = useCustomizerStore((state) => state.getPlacementsForSide(currentSide))
+  const activePlacementId = useCustomizerStore((state) => state.activePlacementId)
+  const getPlacementById = useCustomizerStore((state) => state.getPlacementById)
+  const setActivePlacement = useCustomizerStore((state) => state.setActivePlacement)
+  
+  // T4-D: Get active placement for floating toolbar
+  const activePlacement = activePlacementId ? getPlacementById(activePlacementId) : null
 
   const product = PRODUCT_TEMPLATES[productId]
   const productType = product?.type as ProductType
@@ -91,20 +112,34 @@ export default function SimplePlacementCanvas({
         // Draw mockup at actual size (no stretching/deformation)
         ctx.drawImage(mockupImg, 0, 0, finalWidth, finalHeight)
         
-        // Draw design after mockup
-        drawDesign(ctx, finalWidth, finalHeight)
+        // T4-A: Draw designs based on mode
+        if (useMultiPlacement) {
+          drawMultiplePlacements(ctx, finalWidth, finalHeight)
+        } else {
+          drawSingleDesign(ctx, finalWidth, finalHeight)
+        }
       }
       
       mockupImg.onerror = () => {
         console.warn('Failed to load mockup:', mockupUrl)
         drawFallbackBackground(ctx, canvas.width, canvas.height)
-        drawDesign(ctx, canvas.width, canvas.height)
+        
+        if (useMultiPlacement) {
+          drawMultiplePlacements(ctx, canvas.width, canvas.height)
+        } else {
+          drawSingleDesign(ctx, canvas.width, canvas.height)
+        }
       }
       
       mockupImg.src = mockupUrl
     } else {
       drawFallbackBackground(ctx, canvas.width, canvas.height)
-      drawDesign(ctx, canvas.width, canvas.height)
+      
+      if (useMultiPlacement) {
+        drawMultiplePlacements(ctx, canvas.width, canvas.height)
+      } else {
+        drawSingleDesign(ctx, canvas.width, canvas.height)
+      }
     }
 
     function drawFallbackBackground(ctx: CanvasRenderingContext2D, w: number, h: number) {
@@ -125,7 +160,102 @@ export default function SimplePlacementCanvas({
       ctx.fillText(emoji, w / 2, h / 2)
     }
 
-    function drawDesign(ctx: CanvasRenderingContext2D, canvasW: number, canvasH: number) {
+    // T4-A: Render all placements from store
+    function drawMultiplePlacements(ctx: CanvasRenderingContext2D, canvasW: number, canvasH: number) {
+      if (placements.length === 0) return
+
+      const bounds: typeof placementBounds = []
+
+      // Draw each placement
+      placements.forEach((placement) => {
+        const placementPrintArea = getPrintArea(productType, currentSide, placement.zone)
+        if (!placementPrintArea) return
+
+        const designImg = new Image()
+        designImg.crossOrigin = 'anonymous'
+        
+        designImg.onload = () => {
+          const imgWidth = designImg.naturalWidth || designImg.width
+          const imgHeight = designImg.naturalHeight || designImg.height
+          
+          // Calculate fit dimensions maintaining aspect ratio
+          const fit = calculateFitDimensions(imgWidth, imgHeight, placementPrintArea)
+          
+          // Apply placement's scale factor
+          const scaledWidth = fit.width * placement.scale
+          const scaledHeight = fit.height * placement.scale
+          
+          // Ensure scaled design stays within print area
+          let finalWidth = Math.min(scaledWidth, placementPrintArea.width)
+          let finalHeight = scaledHeight
+          
+          if (finalWidth < scaledWidth) {
+            finalHeight = finalWidth * (imgHeight / imgWidth)
+          }
+          
+          if (finalHeight > placementPrintArea.height) {
+            finalHeight = placementPrintArea.height
+            finalWidth = finalHeight * (imgWidth / imgHeight)
+          }
+          
+          // Use placement's x, y if provided, otherwise center
+          let x = placement.x
+          let y = placement.y
+          
+          // If x/y are 0 (default), center within print area
+          if (x === 0 && y === 0) {
+            x = placementPrintArea.x + (placementPrintArea.width - finalWidth) / 2
+            y = placementPrintArea.y + (placementPrintArea.height - finalHeight) / 2
+          }
+          
+          // T4-D: Track bounds for click detection
+          bounds.push({
+            id: placement.id,
+            x,
+            y,
+            width: finalWidth,
+            height: finalHeight
+          })
+          
+          // Save context for potential rotation
+          ctx.save()
+          
+          // Apply rotation if specified
+          if (placement.rotation && placement.rotation !== 0) {
+            const centerX = x + finalWidth / 2
+            const centerY = y + finalHeight / 2
+            ctx.translate(centerX, centerY)
+            ctx.rotate((placement.rotation * Math.PI) / 180)
+            ctx.translate(-centerX, -centerY)
+          }
+          
+          // Draw design
+          ctx.drawImage(designImg, x, y, finalWidth, finalHeight)
+          
+          // T4-A: Highlight active placement
+          if (placement.id === activePlacementId) {
+            ctx.strokeStyle = '#3B82F6' // Blue for active
+            ctx.lineWidth = 3
+            ctx.strokeRect(x - 2, y - 2, finalWidth + 4, finalHeight + 4)
+          }
+          
+          ctx.restore()
+
+          // Update bounds state
+          setPlacementBounds(bounds)
+
+          // Notify parent that canvas is ready
+          if (onCanvasReady && canvas) {
+            onCanvasReady(canvas)
+          }
+        }
+        
+        designImg.src = placement.designId
+      })
+    }
+
+    // Original single design rendering (backward compatible)
+    function drawSingleDesign(ctx: CanvasRenderingContext2D, canvasW: number, canvasH: number) {
       if (!designImage || !printArea) return
 
       const designImg = new Image()
@@ -176,7 +306,50 @@ export default function SimplePlacementCanvas({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productId, currentSide, selectedColor, designImage, selectedPlacement, scale, mockupUrl, productType])
+  }, [
+    productId, 
+    currentSide, 
+    selectedColor, 
+    designImage, 
+    selectedPlacement, 
+    scale, 
+    mockupUrl, 
+    productType,
+    // T4-A: Add placements to dependencies for multi-placement mode
+    useMultiPlacement ? placements.length : null,
+    useMultiPlacement ? activePlacementId : null
+  ])
+
+  // T4-D: Handle canvas clicks to select placements
+  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!useMultiPlacement || placementBounds.length === 0) return
+
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const rect = canvas.getBoundingClientRect()
+    const scaleX = canvas.width / rect.width
+    const scaleY = canvas.height / rect.height
+    const x = (e.clientX - rect.left) * scaleX
+    const y = (e.clientY - rect.top) * scaleY
+
+    // Check if click is within any placement bounds (reverse order for z-index)
+    for (let i = placementBounds.length - 1; i >= 0; i--) {
+      const bound = placementBounds[i]
+      if (
+        x >= bound.x &&
+        x <= bound.x + bound.width &&
+        y >= bound.y &&
+        y <= bound.y + bound.height
+      ) {
+        setActivePlacement(bound.id)
+        return
+      }
+    }
+
+    // Click outside all placements - deselect
+    setActivePlacement(null)
+  }
 
   if (!product) {
     return (
@@ -205,7 +378,8 @@ export default function SimplePlacementCanvas({
       >
         <canvas
           ref={canvasRef}
-          className="w-full h-full"
+          onClick={handleCanvasClick}
+          className="w-full h-full cursor-pointer"
           style={{
             imageRendering: 'high-quality',
             objectFit: 'contain',
@@ -245,6 +419,13 @@ export default function SimplePlacementCanvas({
             </div>
           </div>
         )}
+
+        {/* T4-D: Floating Toolbar for Active Placement */}
+        <AnimatePresence>
+          {activePlacement && useMultiPlacement && (
+            <FloatingToolbar placement={activePlacement} />
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   )

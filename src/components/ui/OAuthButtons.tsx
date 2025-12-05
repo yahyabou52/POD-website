@@ -1,5 +1,5 @@
 // src/components/ui/OAuthButtons.tsx
-import React from 'react';
+
 import { useAuthStore } from '@/store/auth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
@@ -7,7 +7,7 @@ import { FaApple, FaGoogle, FaGithub } from 'react-icons/fa';
 
 export default function OAuthButtons() {
   const login = useAuthStore((s) => s.login);
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
   const handleMockOAuth = async (provider: 'google' | 'apple' | 'github') => {
     try {
@@ -16,9 +16,9 @@ export default function OAuthButtons() {
       // create mock email from provider
       const email = `${provider}_user@example.com`;
       await login(email, 'oauth-placeholder-password');
-      toast({ title: `Signed in with ${provider}`, description: `Welcome, ${provider} user!`, status: 'success' });
+      addToast({ title: `Signed in with ${provider}`, description: `Welcome, ${provider} user!` });
     } catch (err) {
-      toast({ title: `OAuth login failed`, description: `Unable to sign in with ${provider}.`, status: 'error' });
+      addToast({ title: `OAuth login failed`, description: `Unable to sign in with ${provider}.` });
     }
   };
 

@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Upload, Image as ImageIcon, Eye, Settings, AlignLeft, AlignRight, AlignCenter, Maximize2, Square } from 'lucide-react'
+import { Upload, Image as ImageIcon, ShoppingCart, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
 import { getAvailablePlacementsForSide } from '@/config/printAreas'
+import { PLACEMENT_PRESETS } from '@/config/placementPresets'
 import type { ProductSide, ProductType } from '@/types/customizer'
 
 interface SimplePlacementPanelProps {
@@ -22,16 +23,6 @@ interface SimplePlacementPanelProps {
   onScaleChange: (scale: number) => void
   onGeneratePreview: () => void
   onChangeProduct: () => void
-}
-
-// Placement button configurations with icons
-const PLACEMENT_CONFIGS: Record<string, { label: string; icon: React.ElementType }> = {
-  topLeft: { label: 'Top Left', icon: AlignLeft },
-  topRight: { label: 'Top Right', icon: AlignRight },
-  centerTop: { label: 'Center Top', icon: AlignCenter },
-  fullCenter: { label: 'Full Center', icon: Maximize2 },
-  fullBack: { label: 'Full Back', icon: Square },
-  centered: { label: 'Centered', icon: AlignCenter },
 }
 
 export default function SimplePlacementPanel({
@@ -202,33 +193,55 @@ export default function SimplePlacementPanel({
           </div>
         </div>
 
-        {/* Placement Selection */}
+        {/* Placement Selection - Enhanced Presets */}
         {availablePlacements.length > 0 && (
           <div>
             <label className="text-sm font-medium text-graphite mb-3 block">
-              Select Placement
+              Select Placement Preset
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-2">
               {availablePlacements.map((placement) => {
-                const config = PLACEMENT_CONFIGS[placement] || { 
-                  label: placement, 
-                  icon: Square 
-                }
-                const Icon = config.icon
+                const preset = PLACEMENT_PRESETS[placement]
+                if (!preset) return null
+                
+                const Icon = preset.icon
+                const isSelected = selectedPlacement === placement
                 
                 return (
-                  <button
+                  <motion.button
                     key={placement}
                     onClick={() => onPlacementChange(placement)}
-                    className={`px-3 py-2 rounded-xl border-2 transition-all flex items-center gap-2 justify-center text-sm ${
-                      selectedPlacement === placement
-                        ? 'border-royal bg-royal/10 text-royal font-medium'
-                        : 'border-mist hover:bg-gray-100 text-graphite'
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all text-left ${
+                      isSelected
+                        ? 'border-royal bg-royal/10 shadow-md'
+                        : 'border-mist hover:border-carbon hover:bg-gray-50'
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
-                    <span>{config.label}</span>
-                  </button>
+                    <div className="flex items-start gap-3">
+                      <div className={`mt-0.5 p-2 rounded-lg ${
+                        isSelected ? 'bg-royal text-white' : 'bg-mist text-graphite'
+                      }`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className={`font-semibold text-sm mb-0.5 ${
+                          isSelected ? 'text-royal' : 'text-onyx'
+                        }`}>
+                          {preset.label}
+                        </div>
+                        <div className="text-xs text-carbon line-clamp-2">
+                          {preset.description}
+                        </div>
+                      </div>
+                      {isSelected && (
+                        <div className="mt-1">
+                          <div className="w-2 h-2 rounded-full bg-royal" />
+                        </div>
+                      )}
+                    </div>
+                  </motion.button>
                 )
               })}
             </div>
@@ -328,8 +341,8 @@ export default function SimplePlacementPanel({
           disabled={!designImage || !selectedPlacement}
           className="w-full h-12 font-semibold"
         >
-          <Eye className="w-5 h-5 mr-2" />
-          Generate Preview
+          <ShoppingCart className="w-5 h-5 mr-2" />
+          Add to Cart
         </Button>
 
         {(!designImage || !selectedPlacement) && (

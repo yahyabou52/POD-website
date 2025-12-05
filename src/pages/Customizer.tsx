@@ -1,41 +1,40 @@
 import { useState, useRef } from 'react'
 import ProductWizard from '@/components/customizer/ProductWizard'
-import SimplePlacementCanvas from '@/components/customizer/SimplePlacementCanvas'
-import SimplePlacementPanel from '@/components/customizer/SimplePlacementPanel'
+import ZoneBasedCanvas from '@/components/customizer/ZoneBasedCanvas'
+import ZoneControlPanel from '@/components/customizer/ZoneControlPanel'
 import SimplePreviewModal from '@/components/customizer/SimplePreviewModal'
-import PrintAreaEditor, { isDevMode } from '@/utils/printAreaEditor'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, Settings } from 'lucide-react'
-import type { ProductSelection, ProductSide } from '@/types/customizer'
-import type { PreviewData, DesignData } from '@/config/placements'
-import { getAvailablePlacementsForSide } from '@/config/printAreas'
+import { Sparkles } from 'lucide-react'
+import type { ProductSelection } from '@/types/customizer'
+import type { PreviewData } from '@/config/placements'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
-import { Button } from '@/components/ui/button'
+import { useCartStore } from '@/store/cart'
+import { useToast } from '@/components/ui/use-toast'
+import { useCustomizerStore } from '@/store/customizerStore'
 
 function Customizer() {
   const navigate = useNavigate()
   const location = useLocation()
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const { addToast } = useToast()
+  
+  // Store state
+  const productSide = useCustomizerStore((state) => state.productSide)
+  const setProductSide = useCustomizerStore((state) => state.setProductSide)
+  const zonePlacements = useCustomizerStore((state) => state.zonePlacements)
+  const clearAllZones = useCustomizerStore((state) => state.clearAllZones)
   
   const [showWizard, setShowWizard] = useState(true)
   const [showChangeProduct, setShowChangeProduct] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const [previewData, setPreviewData] = useState<PreviewData | null>(null)
-  const [editorMode, setEditorMode] = useState(false)
-  const [mockupDimensions, setMockupDimensions] = useState({ width: 800, height: 1000 })
   
   // Product state
   const [productId, setProductId] = useState<string>('tshirt-regular-short')
-  const [currentSide, setCurrentSide] = useState<ProductSide>('front')
   const [selectedColor, setSelectedColor] = useState('White')
   const [selectedSize, setSelectedSize] = useState('M')
-  
-  // Design state
-  const [designImage, setDesignImage] = useState<string | null>(null)
-  const [selectedPlacement, setSelectedPlacement] = useState<string | null>(null)
-  const [scale, setScale] = useState(1)
 
   const product = PRODUCT_TEMPLATES[productId]
 
@@ -67,14 +66,10 @@ function Customizer() {
     if (!template) return
     
     setProductId(newProductId)
-    setCurrentSide(selection.printArea || template.availableSides[0])
+    setProductSide('front')
     setSelectedColor(selection.color || template.colors[0].name)
     setSelectedSize(selection.size || template.sizes[0])
-    
-    // Set default placement for the selected side
-    const side = selection.printArea || template.availableSides[0]
-    const placements = getAvailablePlacementsForSide(template.type, side)
-    setSelectedPlacement(placements.length > 0 ? placements[0] : null)
+    clearAllZones()
     
     setShowWizard(false)
     setShowChangeProduct(false)
@@ -89,54 +84,75 @@ function Customizer() {
     }
   }
 
-  const handleSideChange = (side: ProductSide) => {
-    setCurrentSide(side)
-    // Set default placement for new side
-    const placements = getAvailablePlacementsForSide(product!.type, side)
-    setSelectedPlacement(placements.length > 0 ? placements[0] : null)
-  }
-
   const handleCanvasReady = (canvas: HTMLCanvasElement) => {
     canvasRef.current = canvas
-    // Track mockup dimensions for editor
-    setMockupDimensions({ width: canvas.width, height: canvas.height })
   }
 
-  const handleGeneratePreview = () => {
-    if (!canvasRef.current || !designImage || !selectedPlacement) {
-      alert('Please upload a design and select a placement first')
+  const handleAddToCart = () => {
+    if (!canvasRef.current) {
+      addToast({
+        title: '⚠️ No Design',
+        description: 'Please add at least one design to a zone',
+        duration: 3000
+      })
       return
     }
 
-    // Get canvas data URL
-    const previewImage = canvasRef.current.toDataURL('image/png')
-    
-    // Prepare design data
-    const designData: DesignData = {
-      image: designImage,
-      placement: selectedPlacement,
-      scale,
-      side: currentSide,
-      color: selectedColor,
-      size: selectedSize,
-      productId,
+    // Check if any zones have designs
+    const hasDesigns = Object.values(zonePlacements).some(p => p !== null)
+    if (!hasDesigns) {
+      addToast({
+        title: '⚠️ No Design',
+        description: 'Please add at least one design to a zone',
+        duration: 3000
+      })
+      return
     }
 
-    // Create preview data
+    // Export canvas as image
+    const previewImage = canvasRef.current.toDataURL('image/png')
+    
+    // Add to cart store
+    useCartStore.getState().addItem({
+      productId,
+      productType: product!.type,
+      productName: product!.name,
+      size: selectedSize,
+      color: selectedColor,
+      quantity: 1,
+      price: product!.basePrice,
+      customDesign: {
+        imageUrl: previewImage,
+        position: { x: 0, y: 0 },
+        scale: 1,
+        rotation: 0
+      },
+      designUrl: previewImage
+    })
+
+    addToast({
+      title: '✅ Added to Cart',
+      description: `${product!.name} (${selectedColor}, ${selectedSize})`,
+      duration: 3000
+    })
+    
+    // Show preview
     const preview: PreviewData = {
       preview: previewImage,
-      design: designData,
+      design: {
+        image: previewImage,
+        placement: 'zone-based',
+        scale: 1,
+        side: productSide,
+        color: selectedColor,
+        size: selectedSize,
+        productId,
+      },
       timestamp: Date.now(),
     }
 
     setPreviewData(preview)
     setShowPreview(true)
-    
-    // Log for order preparation
-    console.log('📦 Order Data Ready:', {
-      preview: previewImage.substring(0, 50) + '...',
-      design: designData,
-    })
   }
 
   return (
@@ -148,112 +164,50 @@ function Customizer() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-onyx rounded-full text-sm font-medium text-white shadow-lg">
-              <Sparkles className="w-4 h-4" />
-              <span>Simple Placement Designer</span>
-            </div>
-            
-            {/* Print Area Editor Toggle (Dev Mode Only) */}
-            {isDevMode() && !showWizard && (
-              <Button
-                onClick={() => setEditorMode(!editorMode)}
-                variant={editorMode ? "default" : "outline"}
-                className={`transition-all ${
-                  editorMode
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                    : 'border-blue-500 text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                <Settings className="w-4 h-4 mr-2" />
-                {editorMode ? 'Exit Editor Mode' : 'Print Area Editor'}
-              </Button>
-            )}
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-onyx rounded-full text-sm font-medium text-white shadow-lg mb-4">
+            <Sparkles className="w-4 h-4" />
+            <span>Zone-Based Designer</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-semibold text-onyx mb-4 tracking-tight">
             Create Your Design
           </h1>
           <p className="text-lg text-carbon max-w-2xl mx-auto leading-relaxed">
-            Upload your design, select a placement, and generate your preview
+            Click on zones to add your designs
           </p>
         </motion.div>
 
         {/* Main Content */}
         {!showWizard && product ? (
-          <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto relative">
-            {/* Left Panel */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="lg:w-96 shrink-0"
-            >
-              <SimplePlacementPanel
-                productId={productId}
-                currentSide={currentSide}
-                selectedColor={selectedColor}
-                selectedSize={selectedSize}
-                designImage={designImage}
-                selectedPlacement={selectedPlacement}
-                scale={scale}
-                onSideChange={handleSideChange}
-                onColorChange={setSelectedColor}
-                onSizeChange={setSelectedSize}
-                onImageUpload={setDesignImage}
-                onPlacementChange={setSelectedPlacement}
-                onScaleChange={setScale}
-                onGeneratePreview={handleGeneratePreview}
-                onChangeProduct={() => setShowChangeProduct(true)}
-              />
-            </motion.div>
+          <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+            {/* Left Column - Control Panel */}
+            <ZoneControlPanel
+              productId={productId}
+              currentSide={productSide}
+              selectedColor={selectedColor}
+              selectedSize={selectedSize}
+              onSideChange={setProductSide}
+              onColorChange={setSelectedColor}
+              onSizeChange={setSelectedSize}
+              onAddToCart={handleAddToCart}
+              onChangeProduct={() => setShowChangeProduct(true)}
+            />
 
-            {/* Center Canvas */}
+            {/* Center - Canvas */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="flex-1 flex items-center justify-center min-h-[600px] relative"
+              transition={{ delay: 0.2 }}
+              className="flex-1 flex items-center justify-center min-h-[600px]"
             >
-              <div className="relative">
-                <SimplePlacementCanvas
-                  productId={productId}
-                  currentSide={currentSide}
-                  selectedColor={selectedColor}
-                  designImage={designImage}
-                  selectedPlacement={selectedPlacement}
-                  scale={scale}
-                  onCanvasReady={handleCanvasReady}
-                />
-                
-                {/* Print Area Editor Overlay - Positioned over canvas */}
-                {editorMode && (
-                  <PrintAreaEditor
-                    mockupWidth={mockupDimensions.width}
-                    mockupHeight={mockupDimensions.height}
-                    onClose={() => setEditorMode(false)}
-                  />
-                )}
-              </div>
+              <ZoneBasedCanvas
+                productId={productId}
+                currentSide={productSide}
+                selectedColor={selectedColor}
+                onCanvasReady={handleCanvasReady}
+              />
             </motion.div>
           </div>
         ) : null}
-
-        {/* Help Text */}
-        {!showWizard && product && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center mt-8 space-y-2"
-          >
-            <p className="text-sm text-graphite/70">
-              💡 <span className="font-medium">Simple & Fast:</span> Upload design → Select placement → Adjust scale → Generate preview
-            </p>
-            <p className="text-xs text-graphite/50">
-              Preview shows exactly how your design will look on the product
-            </p>
-          </motion.div>
-        )}
       </div>
 
       {/* Product Wizard */}

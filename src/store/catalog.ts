@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import products from '@/config/products';
-import { Product } from '@/types/Product';
+import type { Product } from '@/types/Product';
 
 type CatalogState = {
   products: Product[];

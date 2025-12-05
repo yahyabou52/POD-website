@@ -41,14 +41,14 @@ export default function SimplePreviewModal({
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+          className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-mist">
+          <div className="flex items-center justify-between p-4 md:p-6 border-b border-mist flex-shrink-0">
             <div>
-              <h2 className="text-2xl font-semibold text-onyx">Design Preview</h2>
-              <p className="text-sm text-carbon mt-1">
+              <h2 className="text-xl md:text-2xl font-semibold text-onyx">Design Preview</h2>
+              <p className="text-xs md:text-sm text-carbon mt-1">
                 {previewData.design.side.charAt(0).toUpperCase() + previewData.design.side.slice(1)} • 
                 {' '}{previewData.design.color} • 
                 {' '}{previewData.design.size}
@@ -62,52 +62,52 @@ export default function SimplePreviewModal({
             </button>
           </div>
 
-          {/* Preview Image */}
-          <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100">
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg max-h-[60vh] flex items-center justify-center">
+          {/* Preview Image - Scrollable */}
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-gradient-to-br from-slate-50 to-slate-100">
+            <div className="bg-white rounded-xl overflow-hidden shadow-lg flex items-center justify-center">
               <img
                 src={previewData.preview}
                 alt="Design Preview"
-                className="max-w-full max-h-[60vh] object-contain"
+                className="max-w-full h-auto object-contain"
               />
             </div>
           </div>
 
-          {/* Design Details */}
-          <div className="p-6 border-t border-mist bg-mist/30">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          {/* Design Details - Sticky Footer */}
+          <div className="p-4 md:p-6 border-t border-mist bg-mist/30 flex-shrink-0">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4">
               <div>
                 <p className="text-xs text-carbon mb-1">Placement</p>
-                <p className="text-sm font-medium text-onyx capitalize">
+                <p className="text-xs md:text-sm font-medium text-onyx capitalize">
                   {previewData.design.placement.replace('-', ' ')}
                 </p>
               </div>
               <div>
                 <p className="text-xs text-carbon mb-1">Scale</p>
-                <p className="text-sm font-medium text-onyx">{previewData.design.scale.toFixed(1)}x</p>
+                <p className="text-xs md:text-sm font-medium text-onyx">{previewData.design.scale.toFixed(1)}x</p>
               </div>
               <div>
                 <p className="text-xs text-carbon mb-1">Side</p>
-                <p className="text-sm font-medium text-onyx capitalize">{previewData.design.side}</p>
+                <p className="text-xs md:text-sm font-medium text-onyx capitalize">{previewData.design.side}</p>
               </div>
               <div>
                 <p className="text-xs text-carbon mb-1">Color</p>
-                <p className="text-sm font-medium text-onyx">{previewData.design.color}</p>
+                <p className="text-xs md:text-sm font-medium text-onyx">{previewData.design.color}</p>
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <Button
                 onClick={handleDownload}
-                className="flex-1 h-12 font-semibold"
+                className="flex-1 h-11 md:h-12 font-semibold text-sm md:text-base"
               >
-                <Download className="w-5 h-5 mr-2" />
+                <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Download Preview
               </Button>
               <Button
                 onClick={onClose}
                 variant="outline"
-                className="px-6"
+                className="h-11 md:h-12 px-6 text-sm md:text-base"
               >
                 Close
               </Button>

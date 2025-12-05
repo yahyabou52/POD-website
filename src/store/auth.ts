@@ -67,7 +67,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       setUserFromStorage: () => {
-        const s = (get as any).__store?.getState?.(); // not standard; we rely on persist middleware saving
+        (get as any).__store?.getState?.(); // not standard; we rely on persist middleware saving
         // persist middleware will rehydrate automatically; we keep API for future use
       },
 

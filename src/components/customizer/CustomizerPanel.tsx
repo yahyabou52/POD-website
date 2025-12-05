@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useCustomizerStore } from '@/store/customizer'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
 import { Button } from '@/components/ui/button'
@@ -20,7 +20,6 @@ import {
 import PrintelyaLogo from '@/assets/printelya logo.svg'
 
 export default function ControlPanel() {
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const [activeTab, setActiveTab] = useState<'upload' | 'library' | 'edit'>('upload')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -40,8 +39,6 @@ export default function ControlPanel() {
     updateDesign,
     deleteDesign,
     duplicateDesign,
-    bringToFront,
-    sendToBack,
     moveToPreset,
     undo,
     redo,
@@ -134,6 +131,7 @@ export default function ControlPanel() {
       scaleX: 1,
       scaleY: 1,
       locked: false,
+      rotation: 0
     })
   }
 

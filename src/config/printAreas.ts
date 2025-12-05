@@ -19,7 +19,7 @@ export const PRINT_AREAS: Record<ProductType, ProductPrintAreas> = {
       topLeft: { x: 210, y: 373, width: 140, height: 115 },
       topRight: { x: 380, y: 373, width: 140, height: 115 },
       centerTop: { x: 275, y: 340, width: 180, height: 115 },
-      fullCenter: { x: 200, y: 333, width: 325, height: 285 },
+      fullCenter: { x: 200 , y: 333, width: 325, height: 285 },
     },
     back: {
       fullBack: { x: 200, y: 400, width: 325, height: 370 },

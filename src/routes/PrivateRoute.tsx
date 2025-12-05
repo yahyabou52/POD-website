@@ -1,9 +1,9 @@
 // src/routes/PrivateRoute.tsx
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/auth';
+import type { ReactNode } from 'react';
 
-type Props = { children: JSX.Element };
+type Props = { children: ReactNode };
 
 export default function PrivateRoute({ children }: Props) {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);

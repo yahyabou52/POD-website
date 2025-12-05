@@ -4,15 +4,15 @@ import { Card } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 
 const EmailVerification: React.FC = () => {
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
   const resendEmail = async () => {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast({ title: 'Email Sent', description: 'Verification email has been resent.', status: 'success' });
+      addToast({ title: 'Email Sent', description: 'Verification email has been resent.' });
     } catch (error) {
-      toast({ title: 'Error', description: 'Failed to resend verification email.', status: 'error' });
+      addToast({ title: 'Error', description: 'Failed to resend verification email.' });
     }
   };
 
