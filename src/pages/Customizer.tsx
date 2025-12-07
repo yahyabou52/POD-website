@@ -11,14 +11,14 @@ import ErrorBoundary from '@/components/ui/ErrorBoundary'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
 import { useCartStore } from '@/store/cart'
-import { useToast } from '@/components/ui/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { useCustomizerStore } from '@/store/customizerStore'
 
 function Customizer() {
   const navigate = useNavigate()
   const location = useLocation()
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const { addToast } = useToast()
+  const { toast } = useToast()
   
   // Store state
   const productSide = useCustomizerStore((state) => state.productSide)
@@ -90,22 +90,14 @@ function Customizer() {
 
   const handleAddToCart = () => {
     if (!canvasRef.current) {
-      addToast({
-        title: '⚠️ No Design',
-        description: 'Please add at least one design to a zone',
-        duration: 3000
-      })
+      toast.warning('No Design', 'Please add at least one design to a zone')
       return
     }
 
     // Check if any zones have designs
     const hasDesigns = Object.values(zonePlacements).some(p => p !== null)
     if (!hasDesigns) {
-      addToast({
-        title: '⚠️ No Design',
-        description: 'Please add at least one design to a zone',
-        duration: 3000
-      })
+      toast.warning('No Design', 'Please add at least one design to a zone')
       return
     }
 
@@ -130,11 +122,7 @@ function Customizer() {
       designUrl: previewImage
     })
 
-    addToast({
-      title: '✅ Added to Cart',
-      description: `${product!.name} (${selectedColor}, ${selectedSize})`,
-      duration: 3000
-    })
+    toast.success('Added to Cart', `${product!.name} (${selectedColor}, ${selectedSize})`)
     
     // Show preview
     const preview: PreviewData = {
@@ -156,7 +144,7 @@ function Customizer() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-mist via-white to-mist">
+    <div className="min-h-screen bg-gradient-to-br from-background via-surface to-background">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <motion.div
@@ -164,14 +152,14 @@ function Customizer() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-onyx rounded-full text-sm font-medium text-white shadow-lg mb-4">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary rounded-full text-sm font-medium text-text-on-primary shadow-gold-glow mb-4">
             <Sparkles className="w-4 h-4" />
             <span>Zone-Based Designer</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-semibold text-onyx mb-4 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-semibold text-text-primary mb-4 tracking-tight">
             Create Your Design
           </h1>
-          <p className="text-lg text-carbon max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-text-primary/80 max-w-2xl mx-auto leading-relaxed">
             Click on zones to add your designs
           </p>
         </motion.div>
@@ -225,6 +213,8 @@ function Customizer() {
         isOpen={showPreview}
         previewData={previewData}
         onClose={() => setShowPreview(false)}
+        productId={productId}
+        selectedColor={selectedColor}
       />
     </div>
   )

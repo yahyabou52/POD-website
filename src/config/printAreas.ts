@@ -16,13 +16,13 @@ export interface ProductPrintAreas {
 export const PRINT_AREAS: Record<ProductType, ProductPrintAreas> = {
   hoodie: {
     front: {
-      topLeft: { x: 210, y: 373, width: 140, height: 115 },
-      topRight: { x: 380, y: 373, width: 140, height: 115 },
-      centerTop: { x: 275, y: 340, width: 180, height: 115 },
-      fullCenter: { x: 200 , y: 333, width: 325, height: 285 },
+      topLeft: { x: 237, y: 340, width: 140, height: 115 },
+      topRight: { x: 422, y: 340, width: 140, height: 115 },
+      centerTop: { x: 310, y: 340, width: 180, height: 115 },
+      fullCenter: { x: 237, y: 333, width: 325, height: 285 },
     },
     back: {
-      fullBack: { x: 200, y: 400, width: 325, height: 370 },
+      fullBack: { x: 237, y: 400, width: 325, height: 370 },
     },
     'left-sleeve': {
       centered: { x: 50, y: 100, width: 150, height: 300 },
@@ -33,13 +33,13 @@ export const PRINT_AREAS: Record<ProductType, ProductPrintAreas> = {
   },
   tshirt: {
     front: {
-      topLeft: { x: 225, y: 360, width: 140, height: 115 },
-      topRight: { x: 395, y: 360, width: 140, height: 115 },
-      centerTop: { x: 290, y: 360, width: 180, height: 115 },
-      fullCenter: { x: 217, y: 340, width: 325, height: 470 },
+      topLeft: { x: 237, y: 360, width: 140, height: 115 },
+      topRight: { x: 422, y: 360, width: 140, height: 115 },
+      centerTop: { x: 310, y: 360, width: 180, height: 115 },
+      fullCenter: { x: 237, y: 340, width: 325, height: 470 },
     },
     back: {
-      fullBack: { x: 200, y: 340, width: 325, height: 470 },
+      fullBack: { x: 237, y: 340, width: 325, height: 470 },
     },  
     'left-sleeve': {
       centered: { x: 50, y: 100, width: 100, height: 250 },
@@ -186,4 +186,52 @@ export function getMockupPath(
   const mappedColor = colorMap[colorLower] || colorLower
   
   return `/mockups/${productType}s/${mappedColor}/${sideLower}.png`
+}
+
+// Convert print areas to zone format for ZoneBasedCanvas
+export interface PrintZone {
+  id: string
+  label: string
+  x: number
+  y: number
+  width: number
+  height: number
+  side: 'front' | 'back'
+}
+
+export function getPrintZonesForProduct(productType: ProductType): PrintZone[] {
+  const printAreas = PRINT_AREAS[productType]
+  if (!printAreas) return []
+
+  const zones: PrintZone[] = []
+  
+  // Map placement names to zone labels
+  const labelMap: Record<string, string> = {
+    topLeft: 'Top Left',
+    topRight: 'Top Right',
+    centerTop: 'Center Top',
+    fullCenter: 'Full Center',
+    fullBack: 'Full Back',
+    centered: 'Center',
+  }
+
+  // Convert each print area to a zone
+  Object.entries(printAreas).forEach(([side, placements]) => {
+    if (side === 'left-sleeve' || side === 'right-sleeve' || side === 'hood') return // Skip sleeves for zone-based
+    
+    Object.entries(placements).forEach(([placement, area]) => {
+      const zoneId = `${side}-${placement.replace(/([A-Z])/g, '-$1').toLowerCase()}`
+      zones.push({
+        id: zoneId,
+        label: labelMap[placement] || placement,
+        x: area.x,
+        y: area.y,
+        width: area.width,
+        height: area.height,
+        side: side as 'front' | 'back',
+      })
+    })
+  })
+
+  return zones
 }

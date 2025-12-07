@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import { ShoppingCart, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
+import { useToast } from '@/components/ui/toast'
+import { useEffect, useRef } from 'react'
 
 interface ZoneControlPanelProps {
   productId: string
@@ -27,6 +29,16 @@ export default function ZoneControlPanel({
   onChangeProduct,
 }: ZoneControlPanelProps) {
   const product = PRODUCT_TEMPLATES[productId]
+  const { toast } = useToast()
+  const prevSideRef = useRef(currentSide)
+
+  useEffect(() => {
+    if (prevSideRef.current !== currentSide) {
+      const sideName = currentSide === 'front' ? 'Front' : 'Back'
+      toast.info(`Switched to ${sideName} view`, 'Add designs to this side or switch back to Front')
+      prevSideRef.current = currentSide
+    }
+  }, [currentSide, toast])
 
   if (!product) return null
 
@@ -34,21 +46,21 @@ export default function ZoneControlPanel({
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="w-80 bg-white rounded-2xl shadow-lg border border-gray-200 p-6 space-y-6"
+      className="w-80 bg-surface rounded-2xl shadow-luxury border border-border p-6 space-y-6"
     >
       {/* Header */}
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        <h3 className="text-xl font-semibold text-text-primary mb-2">
           {product.name}
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-text-primary/60">
           Click on zones to add designs
         </p>
       </div>
 
       {/* Product Side */}
       <div>
-        <label className="text-sm font-medium text-gray-700 mb-3 block">
+        <label className="text-sm font-medium text-text-primary mb-3 block">
           Product Side
         </label>
         <div className="flex gap-2">
@@ -56,8 +68,8 @@ export default function ZoneControlPanel({
             onClick={() => onSideChange('front')}
             className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               currentSide === 'front'
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-primary text-text-on-primary shadow-gold-glow'
+                : 'bg-background text-text-primary hover:bg-primary/10'
             }`}
           >
             Front
@@ -66,8 +78,8 @@ export default function ZoneControlPanel({
             onClick={() => onSideChange('back')}
             className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               currentSide === 'back'
-                ? 'bg-gray-900 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-primary text-text-on-primary shadow-gold-glow'
+                : 'bg-background text-text-primary hover:bg-primary/10'
             }`}
           >
             Back
@@ -77,7 +89,7 @@ export default function ZoneControlPanel({
 
       {/* Color Selection */}
       <div>
-        <label className="text-sm font-medium text-gray-700 mb-3 block">
+        <label className="text-sm font-medium text-text-primary mb-3 block">
           Product Color
         </label>
         <div className="flex gap-2 flex-wrap">
@@ -90,10 +102,10 @@ export default function ZoneControlPanel({
                 key={color.name}
                 onClick={() => onColorChange(color.name)}
                 className={`w-8 h-8 rounded-md transition-all ${
-                  isWhite ? 'border border-gray-300' : ''
+                  isWhite ? 'border border-border' : ''
                 } ${
                   selectedColor === color.name
-                    ? 'ring-2 ring-blue-600 ring-offset-2'
+                    ? 'ring-2 ring-primary ring-offset-2'
                     : 'hover:scale-110'
                 }`}
                 style={{ backgroundColor: colorHex }}
@@ -107,7 +119,7 @@ export default function ZoneControlPanel({
 
       {/* Size Selection */}
       <div>
-        <label className="text-sm font-medium text-gray-700 mb-3 block">
+        <label className="text-sm font-medium text-text-primary mb-3 block">
           Size
         </label>
         <div className="flex gap-2 flex-wrap">
@@ -117,8 +129,8 @@ export default function ZoneControlPanel({
               onClick={() => onSizeChange(size)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 selectedSize === size
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-primary text-text-on-primary shadow-gold-glow'
+                  : 'bg-background text-text-primary hover:bg-primary/10'
               }`}
             >
               {size}
@@ -128,10 +140,10 @@ export default function ZoneControlPanel({
       </div>
 
       {/* Actions */}
-      <div className="space-y-3 pt-4 border-t">
+      <div className="space-y-3 pt-4 border-t border-border">
         <Button
           onClick={onAddToCart}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          className="w-full bg-primary hover:bg-primary-dark text-text-on-primary shadow-gold-glow"
         >
           <ShoppingCart className="w-4 h-4 mr-2" />
           Add to Cart
@@ -148,11 +160,11 @@ export default function ZoneControlPanel({
       </div>
 
       {/* Instructions */}
-      <div className="bg-blue-50 rounded-lg p-4">
-        <p className="text-xs text-blue-800 font-medium mb-1">
+      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+        <p className="text-xs text-primary-dark font-medium mb-1">
           💡 How it works:
         </p>
-        <ul className="text-xs text-blue-700 space-y-1">
+        <ul className="text-xs text-text-primary/70 space-y-1">
           <li>• Click any zone to upload a design</li>
           <li>• Designs auto-fit to zone size</li>
           <li>• Click filled zones to replace/remove</li>

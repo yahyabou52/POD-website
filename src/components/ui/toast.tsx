@@ -79,13 +79,13 @@ export function useToast() {
 
   const toast = {
     success: (title: string, message?: string, options?: Partial<Toast>) =>
-      toastStore.add({ type: 'success', title, message, ...options }),
+      toastStore.add({ type: 'success', title, message, duration: 3500, ...options }),
     error: (title: string, message?: string, options?: Partial<Toast>) =>
-      toastStore.add({ type: 'error', title, message, ...options }),
+      toastStore.add({ type: 'error', title, message, duration: 3500, ...options }),
     info: (title: string, message?: string, options?: Partial<Toast>) =>
-      toastStore.add({ type: 'info', title, message, ...options }),
+      toastStore.add({ type: 'info', title, message, duration: 3500, ...options }),
     warning: (title: string, message?: string, options?: Partial<Toast>) =>
-      toastStore.add({ type: 'warning', title, message, ...options }),
+      toastStore.add({ type: 'warning', title, message, duration: 3500, ...options }),
     remove: (id: string) => toastStore.remove(id),
     clear: () => toastStore.clear()
   }
@@ -110,17 +110,17 @@ function ToastComponent({ id, type, title, message, action, onClose }: ToastProp
   }
 
   const colors = {
-    success: 'bg-green-50 border-green-200 text-green-900',
-    error: 'bg-red-50 border-red-200 text-red-900',
-    info: 'bg-blue-50 border-blue-200 text-blue-900',
-    warning: 'bg-yellow-50 border-yellow-200 text-yellow-900'
+    success: 'bg-carbon border-2 border-accent-emerald text-white',
+    error: 'bg-carbon border-2 border-red-500 text-white',
+    info: 'bg-carbon border-2 border-accent-blue text-white',
+    warning: 'bg-carbon border-2 border-accent-orange text-white'
   }
 
   const iconColors = {
-    success: 'text-green-500',
-    error: 'text-red-500',
-    info: 'text-blue-500',
-    warning: 'text-yellow-500'
+    success: 'text-accent-emerald',
+    error: 'text-red-400',
+    info: 'text-accent-blue',
+    warning: 'text-accent-orange'
   }
 
   const Icon = icons[type]
@@ -140,7 +140,7 @@ function ToastComponent({ id, type, title, message, action, onClose }: ToastProp
         stiffness: 300
       }}
       className={cn(
-        'relative w-full max-w-sm p-4 rounded-xl border shadow-lg backdrop-blur-sm',
+        'relative w-full max-w-sm p-4 rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.3)] backdrop-blur-sm',
         colors[type]
       )}
     >

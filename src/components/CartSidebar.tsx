@@ -1,12 +1,31 @@
+import { useState } from 'react'
 import { useCartStore } from '@/store/cart'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { X, Plus, Minus, ShoppingBag } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import ConfirmDialog from '@/components/ui/ConfirmDialog'
+import { useToast } from '@/components/ui/toast'
 
 export default function CartSidebar() {
   const { isOpen, toggleCart, items, removeItem, updateQuantity, getTotalPrice } = useCartStore()
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
+  const [itemToRemove, setItemToRemove] = useState<string | null>(null)
+  const { toast } = useToast()
+
+  const handleRemoveClick = (itemId: string) => {
+    setItemToRemove(itemId)
+    setShowRemoveConfirm(true)
+  }
+
+  const confirmRemove = () => {
+    if (itemToRemove) {
+      removeItem(itemToRemove)
+      toast.success('Item removed', 'Product removed from cart')
+      setItemToRemove(null)
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -27,11 +46,11 @@ export default function CartSidebar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-96 bg-background border-l shadow-xl z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-96 bg-surface border-l border-border shadow-xl z-50 flex flex-col"
           >
             {/* Header */}
-            <div className="p-4 border-b flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Shopping Cart</h2>
+            <div className="p-4 border-b border-border flex justify-between items-center">
+              <h2 className="text-lg font-semibold text-text-primary">Shopping Cart</h2>
               <Button variant="ghost" size="sm" onClick={toggleCart}>
                 <X className="h-4 w-4" />
               </Button>
@@ -95,7 +114,7 @@ export default function CartSidebar() {
                               <Button
                                 size="sm"
                                 variant="ghost"
-                                onClick={() => removeItem(item.id)}
+                                onClick={() => handleRemoveClick(item.id)}
                                 className="text-red-500 hover:text-red-700 h-4 px-0"
                               >
                                 <X className="h-3 w-3" />
@@ -112,8 +131,8 @@ export default function CartSidebar() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-4 border-t space-y-4">
-                <div className="flex justify-between items-center text-lg font-semibold">
+              <div className="p-4 border-t border-border space-y-4 bg-surface">
+                <div className="flex justify-between items-center text-lg font-semibold text-text-primary">
                   <span>Total:</span>
                   <span>${getTotalPrice().toFixed(2)}</span>
                 </div>
@@ -134,6 +153,18 @@ export default function CartSidebar() {
           </motion.div>
         </>
       )}
+
+      {/* Remove Item Confirmation Dialog */}
+      <ConfirmDialog
+        open={showRemoveConfirm}
+        title="Remove Item"
+        description="Are you sure you want to remove this item from your cart?"
+        confirmLabel="Remove"
+        cancelLabel="Cancel"
+        variant="danger"
+        onConfirm={confirmRemove}
+        onCancel={() => setShowRemoveConfirm(false)}
+      />
     </AnimatePresence>
   )
 }

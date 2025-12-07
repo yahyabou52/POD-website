@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/auth';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/toast';
 import OAuthButtons from '@/components/ui/OAuthButtons';
 
 const registerSchema = z
@@ -28,7 +28,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const register_user = useAuthStore((s) => s.register);
   const loading = useAuthStore((s) => s.loading);
-  const { addToast } = useToast();
+  const { toast } = useToast();
 
   const { register: rf, handleSubmit, formState } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
@@ -37,23 +37,23 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterForm) => {
     try {
       await register_user(data.name, data.email, data.password);
-      addToast({ title: 'Registration successful', description: 'You can now log in!' });
+      toast.success('Account created successfully!', 'You can now log in');
       navigate('/');
     } catch (err) {
-      addToast({ title: 'Registration failed', description: (err as any)?.message ?? 'An error occurred' });
+      toast.error('Registration failed', (err as any)?.message ?? 'An error occurred. Please try again.');
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center py-20 px-4">
+    <div className="flex flex-col min-h-screen justify-center items-center py-20 px-4 bg-background">
       <div className="flex justify-center mb-6">
         <img src="/src/assets/printelya logo.svg" alt="Printelya Logo" className="h-12" />
       </div>
-      <div className="w-full max-w-md p-10 bg-white shadow-xl rounded-2xl">
-        <h1 className="text-3xl font-bold text-center mb-6">Create account</h1>
+      <div className="w-full max-w-md p-10 bg-surface shadow-luxury rounded-2xl border border-border">
+        <h1 className="text-3xl font-bold text-center mb-6 text-text-primary">Create account</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium">Name</label>
+            <label className="block text-sm font-medium text-text-primary mb-2">Name</label>
             <Input
               {...rf('name')}
               placeholder="Your name"
@@ -61,7 +61,7 @@ export default function RegisterPage() {
             {formState.errors.name && <p className="text-red-500 text-sm mt-1">{formState.errors.name.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium">Email</label>
+            <label className="block text-sm font-medium text-text-primary mb-2">Email</label>
             <Input
               {...rf('email')}
               placeholder="you@example.com"
@@ -69,7 +69,7 @@ export default function RegisterPage() {
             {formState.errors.email && <p className="text-red-500 text-sm mt-1">{formState.errors.email.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium">Password</label>
+            <label className="block text-sm font-medium text-text-primary mb-2">Password</label>
             <Input
               {...rf('password')}
               type="password"
@@ -78,7 +78,7 @@ export default function RegisterPage() {
             {formState.errors.password && <p className="text-red-500 text-sm mt-1">{formState.errors.password.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium">Confirm Password</label>
+            <label className="block text-sm font-medium text-text-primary mb-2">Confirm Password</label>
             <Input
               {...rf('confirm')}
               type="password"
@@ -90,15 +90,16 @@ export default function RegisterPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-black text-white font-semibold hover:bg-gray-800 transition flex items-center justify-center gap-2"
+            variant="default"
+            className="w-full py-3"
           >
             {loading ? 'Creating...' : 'Create account'}
           </Button>
         </form>
 
-        <div className="mt-6 text-sm text-center">
+        <div className="mt-6 text-sm text-center text-text-primary">
           Already have an account?{' '}
-          <a className="text-blue-600 hover:underline" href="/login">
+          <a className="text-primary hover:text-primary-dark hover:underline font-semibold transition" href="/login">
             Sign in
           </a>
         </div>

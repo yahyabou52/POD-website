@@ -45,7 +45,7 @@ export default function WhyUs() {
   }
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-32 bg-background">
       <div className="container mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -54,10 +54,10 @@ export default function WhyUs() {
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-semibold text-onyx mb-6 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-semibold text-text-primary mb-6 tracking-tight">
             Why Choose Us
           </h2>
-          <p className="text-lg text-carbon max-w-3xl mx-auto">
+          <p className="text-lg text-text-primary/80 max-w-3xl mx-auto">
             Everything you need to create, customize, and deliver exceptional products
           </p>
         </motion.div>
@@ -77,19 +77,19 @@ export default function WhyUs() {
                 variants={itemVariants}
                 className="group"
               >
-                <div className="bg-white rounded-2xl p-6 border border-mist hover:shadow-md hover:-translate-y-1 transition-all duration-300 h-full">
+                <div className="bg-surface rounded-2xl p-6 border border-border hover:shadow-luxury hover:-translate-y-1 transition-all duration-300 h-full">
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-onyx rounded-xl flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-300">
+                      <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-text-on-primary group-hover:scale-105 transition-transform duration-300 shadow-gold-glow">
                         <IconComponent className="w-6 h-6" />
                       </div>
                     </div>
                     
                     <div className="flex-1 pt-1">
-                      <h3 className="text-lg font-semibold text-onyx mb-3 tracking-tight">
+                      <h3 className="text-lg font-semibold text-text-primary mb-3 tracking-tight">
                         {feature.title}
                       </h3>
-                      <p className="text-graphite leading-relaxed">
+                      <p className="text-text-primary/70 leading-relaxed">
                         {feature.description}
                       </p>
                     </div>

@@ -6,12 +6,12 @@ import { ArrowRight } from 'lucide-react'
 
 export default function About() {
   return (
-    <div className="bg-white">
+    <div className="bg-background">
       {/* Premium Hero Header */}
-      <section className="relative py-32 bg-gradient-to-b from-mist to-white overflow-hidden">
+      <section className="relative py-32 bg-gradient-to-b from-background to-surface overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-gold/10 to-transparent rounded-full translate-x-1/3 -translate-y-1/3 opacity-60" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-mist to-transparent rounded-full -translate-x-1/3 translate-y-1/3 opacity-50" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary/10 to-transparent rounded-full translate-x-1/3 -translate-y-1/3 opacity-60" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-background to-transparent rounded-full -translate-x-1/3 translate-y-1/3 opacity-50" />
         </div>
 
         <div className="container mx-auto px-6 md:px-12 relative z-10">
@@ -21,10 +21,10 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-5xl md:text-6xl font-semibold text-onyx mb-8 leading-tight tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-semibold text-text-primary mb-8 leading-tight tracking-tight">
               Our Story
             </h1>
-            <p className="text-lg text-carbon leading-relaxed">
+            <p className="text-lg text-text-primary/80 leading-relaxed">
               We're on a mission to empower creators worldwide with premium custom apparel. 
               Quality craftsmanship meets creative freedom.
             </p>
@@ -33,7 +33,7 @@ export default function About() {
       </section>
 
       {/* Mission + Vision Section */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-surface">
         <div className="container mx-auto px-6 md:px-12">
           <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
             <motion.div
@@ -41,13 +41,13 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="bg-white rounded-2xl p-8 border border-mist hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              className="bg-surface rounded-2xl p-8 border border-border hover:shadow-luxury hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="w-14 h-14 bg-onyx rounded-xl flex items-center justify-center mb-6">
-                <Award className="w-7 h-7 text-white" />
+              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-6">
+                <Award className="w-7 h-7 text-text-on-primary" />
               </div>
-              <h2 className="text-2xl font-semibold text-onyx mb-4 tracking-tight">Our Mission</h2>
-              <p className="text-base text-graphite leading-relaxed">
+              <h2 className="text-2xl font-semibold text-text-primary mb-4 tracking-tight">Our Mission</h2>
+              <p className="text-base text-text-primary/70 leading-relaxed">
                 To democratize custom product creation by providing intuitive design tools and premium quality printing. 
                 We believe everyone deserves to express their creativity without barriers or compromises.
               </p>
@@ -58,13 +58,13 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="bg-white rounded-2xl p-8 border border-mist hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              className="bg-surface rounded-2xl p-8 border border-border hover:shadow-luxury hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="w-14 h-14 bg-onyx rounded-xl flex items-center justify-center mb-6">
-                <Zap className="w-7 h-7 text-white" />
+              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-6">
+                <Zap className="w-7 h-7 text-text-on-primary" />
               </div>
-              <h2 className="text-2xl font-semibold text-onyx mb-4 tracking-tight">Our Vision</h2>
-              <p className="text-base text-graphite leading-relaxed">
+              <h2 className="text-2xl font-semibold text-text-primary mb-4 tracking-tight">Our Vision</h2>
+              <p className="text-base text-text-primary/70 leading-relaxed">
                 To become the world's most trusted platform for custom print-on-demand products, 
                 empowering millions of creators to turn their artistic visions into thriving businesses.
               </p>
@@ -74,7 +74,7 @@ export default function About() {
       </section>
 
       {/* Why We Created Printelya */}
-      <section className="py-32 bg-gradient-to-b from-mist to-white">
+      <section className="py-32 bg-gradient-to-b from-background to-surface">
         <div className="container mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -83,18 +83,18 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto"
           >
-            <div className="bg-mist/50 rounded-[2.5rem] p-12 md:p-16 border border-mist">
+            <div className="bg-primary/5 rounded-[2.5rem] p-12 md:p-16 border border-primary/20">
               <div className="flex items-center justify-center mb-8">
-                <div className="w-20 h-20 bg-onyx rounded-2xl flex items-center justify-center">
-                  <Heart className="w-10 h-10 text-white" />
+                <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center shadow-gold-glow">
+                  <Heart className="w-10 h-10 text-text-on-primary" />
                 </div>
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-semibold text-onyx mb-8 text-center tracking-tight">
+              <h2 className="text-3xl md:text-4xl font-semibold text-text-primary mb-8 text-center tracking-tight">
                 Why We Created Printelya
               </h2>
 
-              <div className="space-y-6 text-base text-graphite leading-relaxed">
+              <div className="space-y-6 text-base text-text-primary/70 leading-relaxed">
                 <p>
                   Printelya was born from a simple frustration: creating custom products shouldn't be complicated, 
                   expensive, or limited to large orders.
@@ -108,7 +108,7 @@ export default function About() {
                   all backed by our commitment to quality and customer satisfaction. Every product is crafted 
                   with care in Morocco, where traditional craftsmanship meets modern innovation.
                 </p>
-                <p className="text-onyx font-medium">
+                <p className="text-text-primary font-medium">
                   Your creativity deserves the best canvas. That's why we're here.
                 </p>
               </div>
@@ -118,7 +118,7 @@ export default function About() {
       </section>
 
       {/* Core Values */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-surface">
         <div className="container mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -127,10 +127,10 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-semibold text-onyx mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold text-text-primary mb-6 tracking-tight">
               What We Stand For
             </h2>
-            <p className="text-lg text-carbon max-w-3xl mx-auto">
+            <p className="text-lg text-text-primary/80 max-w-3xl mx-auto">
               The values that guide everything we do
             </p>
           </motion.div>
@@ -168,14 +168,14 @@ export default function About() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="text-center group"
                 >
-                  <div className="bg-white rounded-2xl p-6 border border-mist hover:shadow-md hover:-translate-y-1 transition-all duration-300 h-full">
-                    <div className="w-14 h-14 bg-onyx rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-transform duration-300">
-                      <IconComponent className="w-7 h-7 text-white" />
+                  <div className="bg-surface rounded-2xl p-6 border border-border hover:shadow-luxury hover:-translate-y-1 transition-all duration-300 h-full">
+                    <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-105 transition-transform duration-300 shadow-gold-glow">
+                      <IconComponent className="w-7 h-7 text-text-on-primary" />
                     </div>
-                    <h3 className="text-lg font-semibold text-onyx mb-3 tracking-tight">
+                    <h3 className="text-lg font-semibold text-text-primary mb-3 tracking-tight">
                       {value.title}
                     </h3>
-                    <p className="text-graphite leading-relaxed text-sm">
+                    <p className="text-text-primary/70 leading-relaxed text-sm">
                       {value.description}
                     </p>
                   </div>
@@ -187,7 +187,7 @@ export default function About() {
       </section>
 
       {/* Production Process */}
-      <section className="py-32 bg-mist">
+      <section className="py-32 bg-background">
         <div className="container mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -196,10 +196,10 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-semibold text-onyx mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold text-text-primary mb-6 tracking-tight">
               How We Create Your Products
             </h2>
-            <p className="text-lg text-carbon max-w-3xl mx-auto">
+            <p className="text-lg text-text-primary/80 max-w-3xl mx-auto">
               From design to delivery, every step is optimized for quality
             </p>
           </motion.div>
@@ -223,24 +223,24 @@ export default function About() {
                 >
                   <div className="relative">
                     {index < 3 && (
-                      <div className="hidden md:block absolute top-12 left-[calc(100%+1rem)] w-8 h-px bg-mist z-0">
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-graphite rotate-45" />
+                      <div className="hidden md:block absolute top-12 left-[calc(100%+1rem)] w-8 h-px bg-border z-0">
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-text-primary rotate-45" />
                       </div>
                     )}
                     
-                    <div className="w-24 h-24 bg-onyx rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                      <IconComponent className="w-12 h-12 text-white" />
+                    <div className="w-24 h-24 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-gold-glow">
+                      <IconComponent className="w-12 h-12 text-text-on-primary" />
                     </div>
                     
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-gold text-onyx rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-primary-dark text-text-on-primary rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
                       {index + 1}
                     </div>
                   </div>
                   
-                  <h3 className="text-2xl font-bold text-onyx mb-3">
+                  <h3 className="text-2xl font-bold text-text-primary mb-3">
                     {step.title}
                   </h3>
-                  <p className="text-graphite font-light">
+                  <p className="text-text-primary/70 font-light">
                     {step.description}
                   </p>
                 </motion.div>
@@ -251,27 +251,27 @@ export default function About() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-surface">
         <div className="container mx-auto px-6 md:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center bg-white rounded-2xl p-12 border border-mist shadow-sm"
+            className="max-w-4xl mx-auto text-center bg-surface rounded-2xl p-12 border border-border shadow-luxury"
           >
-            <h2 className="text-4xl md:text-5xl font-semibold text-onyx mb-8 leading-tight tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold text-text-primary mb-8 leading-tight tracking-tight">
               Ready to Create
               <br />
               Something Amazing?
             </h2>
-            <p className="text-lg text-carbon mb-12 leading-relaxed">
+            <p className="text-lg text-text-primary/80 mb-12 leading-relaxed">
               Join thousands of creators who trust Printelya to bring their designs to life
             </p>
             <Link to="/customizer">
               <Button 
                 size="lg"
-                className="px-8 py-4 text-base font-semibold bg-gold text-onyx hover:bg-gold/80 rounded-lg shadow-sm transition-all duration-300 group"
+                className="px-8 py-4 text-base font-semibold bg-primary hover:bg-primary-dark text-text-on-primary rounded-lg shadow-gold-glow transition-all duration-300 group"
               >
                 Start Designing Now
                 <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />

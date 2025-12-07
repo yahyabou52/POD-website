@@ -7,54 +7,77 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Premium Luxury Palette
-        onyx: '#0D0D0D',        // deep soft black
-        carbon: '#1A1A1A',      // very dark gray
-        graphite: '#2B2B2B',    // neutral dark gray
-        mist: '#EDEDED',        // soft clean gray
-        gold: '#D4AF37',        // premium gold accent
-        royal: '#3A6DFF',       // modern premium blue
-        mint: '#4ADE80',        // success
-        amber: '#FBBF24',       // warning
-        velvet: '#EF4444',      // soft red
+        // Brand Primary Color Palette (#F79A19)
+        'primary': '#F79A19',
+        'primary-light': '#FFC46D',
+        'primary-dark': '#C46E00',
+        'secondary': '#1F1F1F',
+        'background': '#FAF8F5',
+        'surface': '#FFFFFF',
+        'text-primary': '#1A1A1A',
+        'text-on-primary': '#FFFFFF',
+        'border': '#D9D4CE',
+        
+        // Additional brand colors
+        'brand-gold': '#F79A19',
+        'brand-gold-dark': '#C46E00',
+        'brand-gold-light': '#FFC46D',
+        'carbon': '#1F1F1F',
+        'accent-orange': '#FF6B35',
+        'accent-blue': '#5A85FF',
+        'accent-emerald': '#18C29C',
+        'bg-cream': '#FAF8F5',
+        'bg-deep': '#121212',
+        
+        // Legacy names mapped to new palette
+        onyx: '#1A1A1A',
+        graphite: '#2B2B2B',
+        mist: '#FAF8F5',
+        gold: '#F79A19',
+        royal: '#5A85FF',
+        mint: '#18C29C',
+        amber: '#FF6B35',
+        velvet: '#EF4444',
         
         // Existing Colors
         primary: {
-          DEFAULT: 'hsl(222.2, 47.4%, 11.2%)',
-          50: 'hsl(210, 40%, 98%)',
-          100: 'hsl(210, 40%, 96.1%)',
-          200: 'hsl(214.3, 31.8%, 91.4%)',
-          300: 'hsl(212.7, 26.8%, 83.9%)',
-          400: 'hsl(215, 20.2%, 65.1%)',
-          500: 'hsl(215.4, 16.3%, 46.9%)',
-          600: 'hsl(215.3, 19.3%, 34.5%)',
-          700: 'hsl(215.3, 25%, 26.7%)',
-          800: 'hsl(217.2, 32.6%, 17.5%)',
-          900: 'hsl(222.2, 47.4%, 11.2%)',
-          950: 'hsl(229, 84%, 5%)',
-          foreground: 'hsl(210, 40%, 98%)'
+          DEFAULT: '#F79A19',
+          light: '#FFC46D',
+          dark: '#C46E00',
+          50: '#FEF6EC',
+          100: '#FDEDD9',
+          200: '#FBDBB3',
+          300: '#F9C98D',
+          400: '#F7B767',
+          500: '#F79A19',
+          600: '#E08A10',
+          700: '#C46E00',
+          800: '#8F5409',
+          900: '#663906',
+          950: '#331D03',
+          foreground: '#FFFFFF'
         },
         secondary: {
-          DEFAULT: 'hsl(210, 40%, 96.1%)',
-          foreground: 'hsl(222.2, 47.4%, 11.2%)'
+          DEFAULT: '#1F1F1F',
+          foreground: '#FFFFFF'
         },
         destructive: {
-          DEFAULT: 'hsl(0, 84.2%, 60.2%)',
-          foreground: 'hsl(210, 40%, 98%)'
+          DEFAULT: '#EF4444',
+          foreground: '#FFFFFF'
         },
         muted: {
-          DEFAULT: 'hsl(210, 40%, 96.1%)',
-          foreground: 'hsl(215.4, 16.3%, 46.9%)'
+          DEFAULT: '#FAF8F5',
+          foreground: '#6B7280'
         },
         accent: {
-          DEFAULT: 'hsl(210, 40%, 96.1%)',
-          foreground: 'hsl(222.2, 47.4%, 11.2%)'
+          DEFAULT: '#FF6B35',
+          foreground: '#FFFFFF'
         },
-        border: 'hsl(214.3, 31.8%, 91.4%)',
-        input: 'hsl(214.3, 31.8%, 91.4%)',
-        ring: 'hsl(222.2, 84%, 4.9%)',
-        background: 'hsl(0, 0%, 100%)',
-        foreground: 'hsl(222.2, 84%, 4.9%)',
+        border: '#D9D4CE',
+        input: '#D9D4CE',
+        ring: '#F79A19',
+        background: '#FAF8F5',
+        foreground: '#1A1A1A',
       },
       fontFamily: {
         heading: ['Inter', 'system-ui', 'sans-serif'],

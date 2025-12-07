@@ -6,15 +6,43 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Minus, Plus, Trash2, ShoppingCart } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import ConfirmDialog from '@/components/ui/ConfirmDialog'
+import { useToast } from '@/components/ui/toast'
 
 export default function Cart() {
   const { items, removeItem, updateQuantity, clearCart, getTotalPrice } = useCartStore()
   const [promoCode, setPromoCode] = useState('')
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
+  const [showClearConfirm, setShowClearConfirm] = useState(false)
+  const [itemToRemove, setItemToRemove] = useState<string | null>(null)
+  const { toast } = useToast()
 
   const totalPrice = getTotalPrice()
   const shipping = totalPrice > 50 ? 0 : 9.99
   const tax = totalPrice * 0.08
   const finalTotal = totalPrice + shipping + tax
+
+  const handleRemoveClick = (itemId: string) => {
+    setItemToRemove(itemId)
+    setShowRemoveConfirm(true)
+  }
+
+  const confirmRemove = () => {
+    if (itemToRemove) {
+      removeItem(itemToRemove)
+      toast.success('Item removed', 'Product removed from cart')
+      setItemToRemove(null)
+    }
+  }
+
+  const handleClearClick = () => {
+    setShowClearConfirm(true)
+  }
+
+  const confirmClear = () => {
+    clearCart()
+    toast.success('Cart cleared', 'All items removed from cart')
+  }
 
   if (items.length === 0) {
     return (
@@ -117,7 +145,7 @@ export default function Cart() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveClick(item.id)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -129,7 +157,7 @@ export default function Cart() {
             ))}
 
             <div className="flex justify-between items-center pt-4">
-              <Button variant="outline" onClick={clearCart}>
+              <Button variant="outline" onClick={handleClearClick}>
                 Clear Cart
               </Button>
               <Link to="/products">
@@ -206,6 +234,30 @@ export default function Cart() {
           </div>
         </div>
       </div>
+
+      {/* Remove Item Confirmation Dialog */}
+      <ConfirmDialog
+        open={showRemoveConfirm}
+        title="Remove Item"
+        description="Are you sure you want to remove this item from your cart?"
+        confirmLabel="Remove"
+        cancelLabel="Cancel"
+        variant="danger"
+        onConfirm={confirmRemove}
+        onCancel={() => setShowRemoveConfirm(false)}
+      />
+
+      {/* Clear Cart Confirmation Dialog */}
+      <ConfirmDialog
+        open={showClearConfirm}
+        title="Clear Cart"
+        description="Are you sure you want to remove all items from your cart? This action cannot be undone."
+        confirmLabel="Clear All"
+        cancelLabel="Cancel"
+        variant="danger"
+        onConfirm={confirmClear}
+        onCancel={() => setShowClearConfirm(false)}
+      />
     </div>
   )
 }

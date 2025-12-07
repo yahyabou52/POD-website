@@ -4,61 +4,122 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Brand Color Palette based on #F79A19 */
+    --background: 36 18% 97%;     /* #FAF8F5 */
+    --foreground: 0 0% 10%;       /* #1A1A1A */
+    --card: 0 0% 100%;            /* #FFFFFF */
+    --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --popover-foreground: 0 0% 10%;
+    --primary: 32 94% 53%;        /* #F79A19 */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --secondary: 0 0% 12%;        /* #1F1F1F */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 36 18% 97%;          /* #FAF8F5 */
+    --muted-foreground: 0 0% 42%;
+    --accent: 15 100% 60%;        /* #FF6B35 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 9% 82%;          /* #D9D4CE */
+    --input: 30 9% 82%;
+    --ring: 32 94% 53%;           /* #F79A19 */
+    --radius: 0.75rem;
+    
+    /* Custom Brand Variables */
+    --primary: #F79A19;
+    --primary-light: #FFC46D;
+    --primary-dark: #C46E00;
+    --secondary: #1F1F1F;
+    --background: #FAF8F5;
+    --surface: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-on-primary: #FFFFFF;
+    --border-color: #D9D4CE;
+    
+    --brand-gold: #F79A19;
+    --brand-gold-dark: #C46E00;
+    --brand-gold-light: #FFC46D;
+    --carbon: #1F1F1F;
+    --accent-orange: #FF6B35;
+    --accent-blue: #5A85FF;
+    --accent-emerald: #18C29C;
+    --bg-cream: #FAF8F5;
+    --bg-deep: #121212;
+    
+    /* Luxury Shadows */
+    --shadow-luxury: 0 4px 12px rgba(0, 0, 0, 0.16);
+    --shadow-luxury-lg: 0 8px 24px rgba(0, 0, 0, 0.20);
+    --shadow-gold-glow: 0 4px 16px rgba(247, 154, 25, 0.30);
   }
 }
 
 @layer components {
-  /* Glass Effect */
+  /* Glass Effect - Updated for luxury theme */
   .glass-effect {
-    @apply bg-white/80 backdrop-blur-xl shadow-lg;
+    @apply bg-white/90 backdrop-blur-xl;
+    box-shadow: var(--shadow-luxury);
   }
 
-  /* Gradient Text */
+  /* Gradient Text - Gold themed */
   .gradient-text {
-    background: linear-gradient(to right, hsl(222.2, 47.4%, 11.2%), rgb(147, 51, 234), rgb(219, 39, 119));
+    background: linear-gradient(135deg, var(--brand-gold) 0%, var(--accent-orange) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  /* Button Variants */
+  /* Button Variants - Luxury Gold Gradient */
   .btn-primary {
-    background: linear-gradient(to right, hsl(222.2, 47.4%, 11.2%), hsl(229, 84%, 5%));
-    @apply text-white hover:shadow-xl transition-all duration-300;
+    background: linear-gradient(135deg, var(--brand-gold) 0%, var(--brand-gold-dark) 100%);
+    @apply text-carbon font-semibold transition-all duration-300;
+    box-shadow: var(--shadow-gold-glow);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--brand-gold-dark) 0%, var(--brand-gold) 100%);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .btn-carbon {
+    @apply bg-carbon text-white font-semibold border-2 border-brand-gold transition-all duration-300;
+  }
+  
+  .btn-carbon:hover {
+    @apply bg-brand-gold text-carbon;
+    box-shadow: var(--shadow-gold-glow);
   }
 
   /* Hover Lift Effect */
   .hover-lift {
-    @apply transform transition-transform duration-300 hover:-translate-y-2;
+    @apply transform transition-all duration-300 hover:-translate-y-2;
+    box-shadow: var(--shadow-luxury);
+  }
+  
+  .hover-lift:hover {
+    box-shadow: var(--shadow-luxury-lg);
   }
 
-  /* Shadow Utilities */
+  /* Shadow Utilities - Luxury themed */
   .shadow-soft {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
   
   .shadow-soft-lg {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-luxury);
+  }
+  
+  .shadow-luxury {
+    box-shadow: var(--shadow-luxury);
+  }
+  
+  .shadow-luxury-lg {
+    box-shadow: var(--shadow-luxury-lg);
+  }
+  
+  .shadow-gold-glow {
+    box-shadow: var(--shadow-gold-glow);
   }
 }
 

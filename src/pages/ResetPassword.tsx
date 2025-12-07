@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/toast';
 
 const resetPasswordSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -22,15 +22,15 @@ const ResetPassword: React.FC = () => {
     resolver: zodResolver(resetPasswordSchema),
   });
 
-  const { addToast } = useToast();
+  const { toast } = useToast();
 
   const onSubmit = async (_data: ResetPasswordFormValues) => {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      addToast({ title: 'Email Sent', description: 'Check your inbox for reset instructions.' });
+      toast.success('Email Sent', 'Check your inbox for reset instructions.');
     } catch (error) {
-      addToast({ title: 'Error', description: 'Failed to send reset email.' });
+      toast.error('Error', 'Failed to send reset email.');
     }
   };
 

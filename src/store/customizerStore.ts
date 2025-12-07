@@ -67,6 +67,10 @@ type CustomizerState = {
   removeZonePlacement: (zoneId: string) => void;
   clearAllZones: () => void;
   
+  // Show/Hide print areas toggle
+  showPrintAreas: boolean;
+  togglePrintAreas: () => void;
+  
   // Canvas
   canvas?: any;
   setCanvas: (canvas: any) => void;
@@ -140,6 +144,10 @@ export const useCustomizerStore = create<CustomizerState>((set, get) => ({
     zonePlacements: { ...state.zonePlacements, [zoneId]: null }
   })),
   clearAllZones: () => set({ zonePlacements: {} }),
+  
+  // Show/Hide print areas toggle
+  showPrintAreas: true,
+  togglePrintAreas: () => set((state) => ({ showPrintAreas: !state.showPrintAreas })),
   
   // Canvas
   canvas: undefined,

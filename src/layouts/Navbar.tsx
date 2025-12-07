@@ -19,7 +19,7 @@ export default function Navbar() {
     <motion.nav 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-xl shadow-sm border-b border-mist"
+      className="sticky top-0 z-50 w-full bg-surface/95 backdrop-blur-xl shadow-luxury border-b border-border"
     >
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
@@ -53,10 +53,10 @@ export default function Navbar() {
               >
                 <Link 
                   to={item.path} 
-                  className="text-sm font-medium text-graphite hover:text-onyx transition-all duration-200 relative group"
+                  className="text-sm font-medium text-text-primary hover:text-primary transition-all duration-200 relative group"
                 >
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-onyx transition-all duration-200 group-hover:w-full" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full" />
                 </Link>
               </motion.div>
             ))}
@@ -76,7 +76,7 @@ export default function Navbar() {
                   >
                     <Input
                       placeholder="Search products..."
-                      className="w-full pl-4 pr-10 py-2 border-mist focus:border-onyx"
+                      className="w-full pl-4 pr-10 py-2 border-border focus:border-primary"
                     />
                     <Button
                       variant="ghost"
@@ -92,9 +92,9 @@ export default function Navbar() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setIsSearchOpen(true)}
-                    className="p-2 rounded-full hover:bg-mist transition-colors"
+                    className="p-2 rounded-full hover:bg-primary/10 transition-colors"
                   >
-                    <Search className="h-5 w-5 text-graphite" />
+                    <Search className="h-5 w-5 text-text-primary" />
                   </motion.button>
                 )}
               </AnimatePresence>
@@ -105,14 +105,14 @@ export default function Navbar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleCart}
-              className="relative p-2 rounded-full hover:bg-mist transition-colors"
+              className="relative p-2 rounded-full hover:bg-primary/10 transition-colors"
             >
-              <ShoppingCart className="h-5 w-5 text-graphite" />
+              <ShoppingCart className="h-5 w-5 text-text-primary" />
               {totalItems > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-onyx text-white text-xs flex items-center justify-center font-medium"
+                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-text-on-primary text-xs flex items-center justify-center font-medium shadow-gold-glow"
                 >
                   {totalItems}
                 </motion.span>
@@ -150,13 +150,13 @@ export default function Navbar() {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="lg:hidden p-2 rounded-full hover:bg-mist transition-colors"
+              className="lg:hidden p-2 rounded-full hover:bg-primary/10 transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? (
-                <X className="h-6 w-6 text-graphite" />
+                <X className="h-6 w-6 text-text-primary" />
               ) : (
-                <Menu className="h-6 w-6 text-graphite" />
+                <Menu className="h-6 w-6 text-text-primary" />
               )}
             </motion.button>
           </div>
@@ -169,7 +169,7 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden py-6 border-t border-mist"
+              className="lg:hidden py-6 border-t border-border"
             >
               <div className="flex flex-col space-y-4">
                 {[
@@ -186,7 +186,7 @@ export default function Navbar() {
                   >
                     <Link 
                       to={item.path} 
-                      className="block text-graphite hover:text-onyx transition-colors py-2 font-medium"
+                      className="block text-text-primary hover:text-primary transition-colors py-2 font-medium"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {item.name}
@@ -196,7 +196,7 @@ export default function Navbar() {
                 
                 {!isAuthenticated && (
                   <motion.div 
-                    className="pt-4 border-t border-mist space-y-3"
+                    className="pt-4 border-t border-border space-y-3"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}

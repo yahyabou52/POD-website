@@ -78,7 +78,7 @@ export default function FeaturedProducts() {
             <Button 
               variant="outline" 
               size="lg"
-              className="px-6 py-3 rounded-lg border border-carbon hover:bg-mist transition-all duration-300 group font-medium text-carbon"
+              className="px-6 py-3 rounded-xl border-2 border-brand-gold text-carbon hover:bg-brand-gold/10 transition-all duration-300 group font-medium"
             >
               View All Products
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -107,7 +107,7 @@ export default function FeaturedProducts() {
                 {/* Product image */}
                 <div className="aspect-square bg-gradient-to-br from-mist to-white p-10 flex items-center justify-center relative overflow-hidden">
                   {product.badge && (
-                    <div className="absolute top-4 right-4 bg-onyx text-white px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg">
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-brand-gold to-brand-gold-dark text-white px-4 py-1.5 rounded-full text-xs font-semibold shadow-gold-glow">
                       {product.badge}
                     </div>
                   )}
@@ -141,7 +141,7 @@ export default function FeaturedProducts() {
                   <Link to={`/customizer?product=${product.id}`}>
                     <Button 
                       size="sm" 
-                      className="w-full rounded-lg bg-onyx hover:bg-carbon transition-all duration-300 py-3 font-medium text-sm"
+                      className="w-full rounded-xl bg-gradient-to-r from-brand-gold to-brand-gold-dark hover:shadow-gold-glow transition-all duration-300 py-3 font-medium text-sm text-white"
                     >
                       Customize Now
                     </Button>

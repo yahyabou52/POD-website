@@ -82,12 +82,12 @@ export default function HowItWorks() {
                   
                   <div className="text-center relative bg-white rounded-2xl p-6 border border-mist hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                     {/* Step number */}
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-onyx text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-[#F79A19] text-white rounded-full flex items-center justify-center text-sm font-semibold">
                       {index + 1}
                     </div>
                     
                     {/* Icon */}
-                    <div className="w-16 h-16 bg-onyx rounded-xl flex items-center justify-center mx-auto mb-6 mt-4 group-hover:scale-105 transition-transform duration-300">
+                    <div className="w-16 h-16 bg-[#F79A19] rounded-xl flex items-center justify-center mx-auto mb-6 mt-4 group-hover:scale-105 transition-transform duration-300">
                       <IconComponent className="w-8 h-8 text-white" />
                     </div>
                     

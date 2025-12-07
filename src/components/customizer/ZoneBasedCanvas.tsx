@@ -1,9 +1,10 @@
 import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import ZoneOverlay, { type PrintZone } from './ZoneOverlay'
+import { Eye, EyeOff } from 'lucide-react'
+import ZoneOverlay from './ZoneOverlay'
 import { useCustomizerStore } from '@/store/customizerStore'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
-import { getMockupPath } from '@/config/printAreas'
+import { getMockupPath, getPrintZonesForProduct } from '@/config/printAreas'
 import type { ProductType } from '@/types/customizer'
 
 interface ZoneBasedCanvasProps {
@@ -11,36 +12,6 @@ interface ZoneBasedCanvasProps {
   currentSide: 'front' | 'back'
   selectedColor: string
   onCanvasReady?: (canvas: HTMLCanvasElement) => void
-}
-
-// Define print zones (coordinates will be refined based on actual mockups)
-const PRINT_ZONES: Record<string, PrintZone[]> = {
-  'tshirt': [
-    // Front zones
-    { id: 'front-top-left', label: 'Top Left', x: 237, y: 360, width: 140, height: 115, side: 'front' },
-    { id: 'front-top-right', label: 'Top Right', x: 422, y: 360, width: 140, height: 115, side: 'front' },
-    { id: 'front-center-top', label: 'Center Top', x: 310, y: 360, width: 180, height: 115, side: 'front' },
-    { id: 'front-full-center', label: 'Full Center', x: 237, y: 340, width: 325, height: 470, side: 'front' },
-    // Back zones
-    { id: 'back-full', label: 'Full Back', x: 237, y: 340, width: 325, height: 470, side: 'back' },
-  ],
-  'hoodie': [
-    // Front zones
-    { id: 'front-top-left', label: 'Top Left', x: 210, y: 373, width: 140, height: 115, side: 'front' },
-    { id: 'front-top-right', label: 'Top Right', x: 380, y: 373, width: 140, height: 115, side: 'front' },
-    { id: 'front-center-top', label: 'Center Top', x: 275, y: 340, width: 180, height: 115, side: 'front' },
-    { id: 'front-full-center', label: 'Full Center', x: 200, y: 333, width: 325, height: 285, side: 'front' },
-    // Back zones
-    { id: 'back-full', label: 'Full Back', x: 200, y: 400, width: 325, height: 370, side: 'back' },
-  ],
-  'cap': [
-    { id: 'front-center', label: 'Front Center', x: 150, y: 200, width: 400, height: 200, side: 'front' },
-    { id: 'back-center', label: 'Back Center', x: 150, y: 200, width: 400, height: 150, side: 'back' },
-  ],
-  'mug': [
-    { id: 'front-center', label: 'Front', x: 150, y: 150, width: 400, height: 400, side: 'front' },
-    { id: 'back-center', label: 'Back', x: 150, y: 150, width: 400, height: 400, side: 'back' },
-  ],
 }
 
 export default function ZoneBasedCanvas({
@@ -55,12 +26,14 @@ export default function ZoneBasedCanvas({
   const zonePlacements = useCustomizerStore((state) => state.zonePlacements)
   const setZonePlacement = useCustomizerStore((state) => state.setZonePlacement)
   const removeZonePlacement = useCustomizerStore((state) => state.removeZonePlacement)
+  const showPrintAreas = useCustomizerStore((state) => state.showPrintAreas)
+  const togglePrintAreas = useCustomizerStore((state) => state.togglePrintAreas)
 
   const product = PRODUCT_TEMPLATES[productId]
   const productType = product?.type as ProductType
 
-  // Get zones for current product and side
-  const allZones = PRINT_ZONES[productType] || []
+  // Get zones for current product and side from centralized config
+  const allZones = getPrintZonesForProduct(productType)
   const visibleZones = allZones.filter(zone => zone.side === currentSide)
 
   // Get mockup image
@@ -164,6 +137,25 @@ export default function ZoneBasedCanvas({
 
   return (
     <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-8">
+      {/* Floating Toggle Button */}
+      <button
+        onClick={togglePrintAreas}
+        className="absolute top-4 right-4 z-50 bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg border border-gray-200 transition-all duration-200 hover:scale-105 active:scale-95 flex items-center gap-2"
+        title={showPrintAreas ? 'Hide Print Area Guides' : 'Show Print Area Guides'}
+      >
+        {showPrintAreas ? (
+          <>
+            <EyeOff className="w-5 h-5 text-gray-700" />
+            <span className="text-sm font-medium text-gray-700 pr-1">Hide Guides</span>
+          </>
+        ) : (
+          <>
+            <Eye className="w-5 h-5 text-gray-700" />
+            <span className="text-sm font-medium text-gray-700 pr-1">Show Guides</span>
+          </>
+        )}
+      </button>
+
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -192,6 +184,7 @@ export default function ZoneBasedCanvas({
             imageUrl={zonePlacements[zone.id]?.imageUrl}
             onUpload={(file, imageUrl) => handleZoneUpload(zone.id, file, imageUrl)}
             onRemove={() => handleZoneRemove(zone.id)}
+            showPrintAreas={showPrintAreas}
           />
         ))}
       </motion.div>
