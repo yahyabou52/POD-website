@@ -10,16 +10,16 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
-  // Mock product data
+  // Mock product data - mapped to actual PRODUCT_TEMPLATES IDs
   const products = [
-    { id: 1, name: 'Classic White T-Shirt', price: 19.99, category: 'tshirt', image: '/src/assets/tshirt-placeholder.svg', colors: 5, sizes: 6 },
-    { id: 2, name: 'Premium Black Hoodie', price: 39.99, category: 'hoodie', image: '/src/assets/hoodie-placeholder.svg', colors: 4, sizes: 5 },
-    { id: 3, name: 'Baseball Cap', price: 24.99, category: 'cap', image: '/src/assets/cap-placeholder.svg', colors: 6, sizes: 3 },
-    { id: 4, name: 'Coffee Mug', price: 14.99, category: 'mug', image: '/src/assets/mug-placeholder.svg', colors: 3, sizes: 2 },
-    { id: 5, name: 'Vintage T-Shirt', price: 22.99, category: 'tshirt', image: '/src/assets/tshirt-placeholder.svg', colors: 4, sizes: 6 },
-    { id: 6, name: 'Zip-Up Hoodie', price: 44.99, category: 'hoodie', image: '/src/assets/hoodie-placeholder.svg', colors: 3, sizes: 5 },
-    { id: 7, name: 'Snapback Cap', price: 27.99, category: 'cap', image: '/src/assets/cap-placeholder.svg', colors: 5, sizes: 2 },
-    { id: 8, name: 'Travel Mug', price: 18.99, category: 'mug', image: '/src/assets/mug-placeholder.svg', colors: 2, sizes: 1 },
+    { id: 'tshirt-regular-short', name: 'Classic White T-Shirt', price: 19.99, category: 'tshirt', image: '/src/assets/tshirt-placeholder.svg', colors: 5, sizes: 6 },
+    { id: 'hoodie-regular', name: 'Premium Black Hoodie', price: 39.99, category: 'hoodie', image: '/src/assets/hoodie-placeholder.svg', colors: 4, sizes: 5 },
+    { id: 'cap-regular', name: 'Baseball Cap', price: 24.99, category: 'cap', image: '/src/assets/cap-placeholder.svg', colors: 6, sizes: 3 },
+    { id: 'mug-regular', name: 'Coffee Mug', price: 14.99, category: 'mug', image: '/src/assets/mug-placeholder.svg', colors: 3, sizes: 2 },
+    { id: 'tshirt-regular-full', name: 'Vintage T-Shirt', price: 22.99, category: 'tshirt', image: '/src/assets/tshirt-placeholder.svg', colors: 4, sizes: 6 },
+    { id: 'hoodie-oversize', name: 'Zip-Up Hoodie', price: 44.99, category: 'hoodie', image: '/src/assets/hoodie-placeholder.svg', colors: 3, sizes: 5 },
+    { id: 'cap-trucker', name: 'Snapback Cap', price: 27.99, category: 'cap', image: '/src/assets/cap-placeholder.svg', colors: 5, sizes: 2 },
+    { id: 'mug-travel', name: 'Travel Mug', price: 18.99, category: 'mug', image: '/src/assets/mug-placeholder.svg', colors: 2, sizes: 1 },
   ]
 
   const categories = [

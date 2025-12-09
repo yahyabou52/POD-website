@@ -1,84 +1,90 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useCartStore } from '@/store/cart'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Minus, Plus, Trash2, ShoppingCart } from 'lucide-react'
+import { Card } from '@/components/ui/card'
+import { Minus, Plus, Trash2, ShoppingCart, ArrowRight, Eye, Download } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import { useToast } from '@/components/ui/toast'
+import { useState } from 'react'
 
 export default function Cart() {
   const { items, removeItem, updateQuantity, clearCart, getTotalPrice } = useCartStore()
-  const [promoCode, setPromoCode] = useState('')
-  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
-  const [showClearConfirm, setShowClearConfirm] = useState(false)
-  const [itemToRemove, setItemToRemove] = useState<string | null>(null)
   const { toast } = useToast()
+  const [previewItem, setPreviewItem] = useState<any>(null)
+  const [showPreview, setShowPreview] = useState(false)
 
   const totalPrice = getTotalPrice()
   const shipping = totalPrice > 50 ? 0 : 9.99
   const tax = totalPrice * 0.08
   const finalTotal = totalPrice + shipping + tax
 
-  const handleRemoveClick = (itemId: string) => {
-    setItemToRemove(itemId)
-    setShowRemoveConfirm(true)
+  const handleRemove = (id: string, name: string) => {
+    removeItem(id)
+    toast.success('Removed from cart', name)
   }
 
-  const confirmRemove = () => {
-    if (itemToRemove) {
-      removeItem(itemToRemove)
-      toast.success('Item removed', 'Product removed from cart')
-      setItemToRemove(null)
+  const handleClearCart = () => {
+    if (items.length > 0) {
+      clearCart()
+      toast.success('Cart cleared', 'All items removed')
     }
-  }
-
-  const handleClearClick = () => {
-    setShowClearConfirm(true)
-  }
-
-  const confirmClear = () => {
-    clearCart()
-    toast.success('Cart cleared', 'All items removed from cart')
   }
 
   if (items.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center">
-          <ShoppingCart className="h-24 w-24 text-muted-foreground mx-auto mb-8" />
-          <h1 className="text-3xl font-bold text-foreground mb-4">Your Cart is Empty</h1>
-          <p className="text-lg text-muted-foreground mb-8">
-            Start shopping and add some amazing products to your cart!
-          </p>
-          <div className="space-x-4">
-            <Link to="/products">
-              <Button size="lg">Browse Products</Button>
-            </Link>
-            <Link to="/customizer">
-              <Button variant="outline" size="lg">Create Custom Design</Button>
-            </Link>
-          </div>
+      <div className="min-h-screen bg-background py-16">
+        <div className="container mx-auto px-4 max-w-2xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <div className="bg-surface rounded-full w-32 h-32 flex items-center justify-center mx-auto mb-6">
+              <ShoppingCart className="h-16 w-16 text-carbon/40" />
+            </div>
+            <h1 className="text-3xl font-semibold text-onyx mb-4">Your Cart is Empty</h1>
+            <p className="text-lg text-carbon mb-8">
+              Start shopping and add some amazing products to your cart!
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/products">
+                <Button size="lg" className="w-full sm:w-auto">
+                  Browse Products
+                </Button>
+              </Link>
+              <Link to="/customizer">
+                <Button variant="carbon" size="lg" className="w-full sm:w-auto">
+                  Create Custom Design
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center py-20 px-4">
-      <div className="flex justify-center mb-6">
-        <img src="/src/assets/printelya logo.svg" alt="Printelya Logo" className="h-12" />
-      </div>
-      <div className="w-full max-w-4xl p-10 bg-white shadow-xl rounded-2xl">
+    <div className="min-h-screen bg-background py-12">
+      <div className="container mx-auto px-4 max-w-4xl">
+        {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Shopping Cart
+          <h1 className="text-3xl md:text-4xl font-semibold text-onyx mb-2 tracking-tight">
+            Your Cart
           </h1>
-          <p className="text-lg text-muted-foreground">
-            Review your items and proceed to checkout
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-carbon">
+              {items.length} {items.length === 1 ? 'item' : 'items'}
+            </p>
+            {items.length > 0 && (
+              <button
+                onClick={handleClearCart}
+                className="text-sm text-carbon hover:text-onyx transition-colors"
+              >
+                Clear cart
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -89,175 +95,213 @@ export default function Cart() {
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
               >
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center space-x-4">
-                      {/* Product Image */}
-                      <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                        {item.designUrl ? (
-                          <img 
-                            src={item.designUrl} 
-                            alt={item.productName}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                            <span className="text-xs text-gray-500">No Design</span>
-                          </div>
-                        )}
-                      </div>
+                <Card className="p-6">
+                  <div className="flex gap-4">
+                    {/* Product Image */}
+                    <div className="w-24 h-24 bg-surface rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+                      <img
+                        src={item.image || '/src/assets/tshirt-placeholder.svg'}
+                        alt={item.name}
+                        className="w-full h-full object-contain p-2"
+                        onError={(e) => {
+                          e.currentTarget.src = '/src/assets/tshirt-placeholder.svg'
+                        }}
+                      />
+                    </div>
 
-                      {/* Product Details */}
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-foreground">{item.productName}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          Size: {item.size} | Color: 
-                          <span 
-                            className="inline-block w-4 h-4 rounded-full ml-2 border"
-                            style={{ backgroundColor: item.color }}
-                          />
-                        </p>
-                        <p className="text-lg font-bold text-primary mt-2">${item.price}</p>
-                      </div>
+                    {/* Product Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-onyx mb-1 tracking-tight">
+                        {item.name}
+                      </h3>
+                      <p className="text-sm text-carbon mb-2">
+                        {item.color} • {item.size}
+                      </p>
+                      <p className="text-lg font-semibold text-primary">
+                        ${item.price.toFixed(2)}
+                      </p>
+                      {item.designUrl && (
+                        <button
+                          onClick={() => {
+                            setPreviewItem(item)
+                            setShowPreview(true)
+                          }}
+                          className="mt-2 text-sm text-primary hover:text-primary-dark transition-colors flex items-center gap-1"
+                        >
+                          <Eye className="h-4 w-4" />
+                          View Design
+                        </button>
+                      )}
+                    </div>
 
-                      {/* Quantity Controls */}
-                      <div className="flex items-center space-x-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
+                    {/* Quantity Controls */}
+                    <div className="flex flex-col items-end justify-between">
+                      <button
+                        onClick={() => handleRemove(item.id, item.name)}
+                        className="text-carbon hover:text-red-500 transition-colors p-1"
+                        aria-label="Remove item"
+                      >
+                        <Trash2 className="h-5 w-5" />
+                      </button>
+
+                      <div className="flex items-center gap-2">
+                        <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="w-8 h-8 rounded-lg border-2 border-mist hover:border-graphite flex items-center justify-center transition-colors"
+                          aria-label="Decrease quantity"
                         >
                           <Minus className="h-4 w-4" />
-                        </Button>
-                        <span className="w-8 text-center">{item.quantity}</span>
-                        <Button
-                          size="sm"
-                          variant="outline"
+                        </button>
+                        <span className="w-8 text-center font-medium text-onyx">
+                          {item.quantity}
+                        </span>
+                        <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="w-8 h-8 rounded-lg border-2 border-mist hover:border-graphite flex items-center justify-center transition-colors"
+                          aria-label="Increase quantity"
                         >
                           <Plus className="h-4 w-4" />
-                        </Button>
+                        </button>
                       </div>
-
-                      {/* Remove Button */}
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleRemoveClick(item.id)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               </motion.div>
             ))}
-
-            <div className="flex justify-between items-center pt-4">
-              <Button variant="outline" onClick={handleClearClick}>
-                Clear Cart
-              </Button>
-              <Link to="/products">
-                <Button variant="ghost">Continue Shopping</Button>
-              </Link>
-            </div>
           </div>
 
           {/* Order Summary */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between">
+          <div className="lg:col-span-1">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Card className="p-6 sticky top-8">
+                <h2 className="text-xl font-semibold text-onyx mb-6 tracking-tight">
+                  Order Summary
+                </h2>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex justify-between text-carbon">
                     <span>Subtotal</span>
-                    <span>${totalPrice.toFixed(2)}</span>
+                    <span className="font-medium">${totalPrice.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between text-carbon">
                     <span>Shipping</span>
-                    <span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
+                    <span className="font-medium">
+                      {shipping === 0 ? (
+                        <span className="text-accent-emerald">FREE</span>
+                      ) : (
+                        `$${shipping.toFixed(2)}`
+                      )}
+                    </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Tax</span>
-                    <span>${tax.toFixed(2)}</span>
+                  <div className="flex justify-between text-carbon">
+                    <span>Tax (8%)</span>
+                    <span className="font-medium">${tax.toFixed(2)}</span>
                   </div>
-                  <hr />
-                  <div className="flex justify-between font-bold text-lg">
-                    <span>Total</span>
-                    <span>${finalTotal.toFixed(2)}</span>
+                  
+                  {totalPrice < 50 && (
+                    <div className="bg-surface rounded-lg p-3 mt-4">
+                      <p className="text-xs text-carbon">
+                        Add <span className="font-semibold text-primary">${(50 - totalPrice).toFixed(2)}</span> more for free shipping!
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="border-t border-mist pt-4 mb-6">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-semibold text-onyx">Total</span>
+                    <span className="text-2xl font-semibold text-primary">
+                      ${finalTotal.toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
-                {shipping > 0 && (
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <p className="text-sm text-blue-800">
-                      Add ${(50 - totalPrice).toFixed(2)} more for free shipping!
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                <Link to="/checkout">
+                  <Button className="w-full h-12 text-base font-medium" size="lg">
+                    Proceed to Checkout
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </Link>
 
-            {/* Promo Code */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Promo Code</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex space-x-2">
-                  <Input
-                    placeholder="Enter promo code"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value)}
-                  />
-                  <Button variant="outline">Apply</Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Checkout Button */}
-            <Link to="/checkout" className="block">
-              <Button className="w-full" size="lg">
-                Proceed to Checkout
-              </Button>
-            </Link>
-
-            {/* Security Badge */}
-            <div className="text-center text-sm text-muted-foreground">
-              🔒 Secure checkout with SSL encryption
-            </div>
+                <Link to="/products" className="block mt-3">
+                  <Button variant="ghost" className="w-full" size="lg">
+                    Continue Shopping
+                  </Button>
+                </Link>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </div>
 
-      {/* Remove Item Confirmation Dialog */}
-      <ConfirmDialog
-        open={showRemoveConfirm}
-        title="Remove Item"
-        description="Are you sure you want to remove this item from your cart?"
-        confirmLabel="Remove"
-        cancelLabel="Cancel"
-        variant="danger"
-        onConfirm={confirmRemove}
-        onCancel={() => setShowRemoveConfirm(false)}
-      />
+      {/* Preview Modal */}
+      {showPreview && previewItem && (
+        <div 
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowPreview(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-auto"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-semibold text-onyx">
+                  Design Preview
+                </h2>
+                <p className="text-carbon">
+                  {previewItem.name} • {previewItem.color} • {previewItem.size}
+                </p>
+              </div>
+              <button
+                onClick={() => setShowPreview(false)}
+                className="text-carbon hover:text-onyx transition-colors"
+              >
+                ✕
+              </button>
+            </div>
 
-      {/* Clear Cart Confirmation Dialog */}
-      <ConfirmDialog
-        open={showClearConfirm}
-        title="Clear Cart"
-        description="Are you sure you want to remove all items from your cart? This action cannot be undone."
-        confirmLabel="Clear All"
-        cancelLabel="Cancel"
-        variant="danger"
-        onConfirm={confirmClear}
-        onCancel={() => setShowClearConfirm(false)}
-      />
+            <div className="bg-surface rounded-xl p-8 mb-6">
+              <img
+                src={previewItem.designUrl || previewItem.image}
+                alt="Design preview"
+                className="w-full h-auto max-h-[60vh] object-contain mx-auto"
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                onClick={() => {
+                  const link = document.createElement('a')
+                  link.href = previewItem.designUrl || previewItem.image
+                  link.download = `${previewItem.name}-${previewItem.color}-${previewItem.size}.png`
+                  link.click()
+                  toast.success('Downloaded', 'Design image downloaded')
+                }}
+                className="flex-1"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download Design
+              </Button>
+              <Button
+                onClick={() => setShowPreview(false)}
+                variant="outline"
+                className="flex-1"
+              >
+                Close
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
-}
+} 

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ShoppingCart, RefreshCw } from 'lucide-react'
+import { ShoppingCart, RefreshCw, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PRODUCT_TEMPLATES } from '@/config/productTemplates'
 import { useToast } from '@/components/ui/toast'
@@ -14,6 +14,7 @@ interface ZoneControlPanelProps {
   onColorChange: (color: string) => void
   onSizeChange: (size: string) => void
   onAddToCart: () => void
+  onPreview: () => void
   onChangeProduct: () => void
 }
 
@@ -26,6 +27,7 @@ export default function ZoneControlPanel({
   onColorChange,
   onSizeChange,
   onAddToCart,
+  onPreview,
   onChangeProduct,
 }: ZoneControlPanelProps) {
   const product = PRODUCT_TEMPLATES[productId]
@@ -141,13 +143,23 @@ export default function ZoneControlPanel({
 
       {/* Actions */}
       <div className="space-y-3 pt-4 border-t border-border">
-        <Button
-          onClick={onAddToCart}
-          className="w-full bg-primary hover:bg-primary-dark text-text-on-primary shadow-gold-glow"
-        >
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          Add to Cart
-        </Button>
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            onClick={onPreview}
+            variant="outline"
+            className="w-full"
+          >
+            <Eye className="w-4 h-4 mr-2" />
+            Preview
+          </Button>
+          <Button
+            onClick={onAddToCart}
+            className="w-full bg-primary hover:bg-primary-dark text-text-on-primary shadow-gold-glow"
+          >
+            <ShoppingCart className="w-4 h-4 mr-2" />
+            Add to Cart
+          </Button>
+        </div>
 
         <Button
           onClick={onChangeProduct}

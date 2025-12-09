@@ -11,7 +11,7 @@ import PrintelyaLogo from '@/assets/printelya logo.svg'
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const { getTotalItems, toggleCart } = useCartStore()
+  const { getTotalItems } = useCartStore()
   const { isAuthenticated, user, logout } = useAuthStore()
   const totalItems = getTotalItems()
 
@@ -101,23 +101,24 @@ export default function Navbar() {
             </div>
 
             {/* Cart */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleCart}
-              className="relative p-2 rounded-full hover:bg-primary/10 transition-colors"
-            >
-              <ShoppingCart className="h-5 w-5 text-text-primary" />
-              {totalItems > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-text-on-primary text-xs flex items-center justify-center font-medium shadow-gold-glow"
-                >
-                  {totalItems}
-                </motion.span>
-              )}
-            </motion.button>
+            <Link to="/cart">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="relative p-2 rounded-full hover:bg-primary/10 transition-colors"
+              >
+                <ShoppingCart className="h-5 w-5 text-text-primary" />
+                {totalItems > 0 && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-text-on-primary text-xs flex items-center justify-center font-medium shadow-gold-glow"
+                  >
+                    {totalItems}
+                  </motion.span>
+                )}
+              </motion.button>
+            </Link>
 
             {/* User Menu */}
             {isAuthenticated ? (

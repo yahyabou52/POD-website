@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './layouts/Layout'
 import PremiumHome from './pages/PremiumHome'
 import Products from './pages/Products'
+import ProductDetail from './pages/ProductDetail'
 import Customizer from './pages/Customizer'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<PremiumHome />} />
             <Route path="products" element={<Products />} />
+            <Route path="product/:id" element={<ProductDetail />} />
             <Route path="customizer" element={<Customizer />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />

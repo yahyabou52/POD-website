@@ -88,7 +88,7 @@ function Customizer() {
     canvasRef.current = canvas
   }
 
-  const handleAddToCart = () => {
+  const handlePreview = () => {
     if (!canvasRef.current) {
       toast.warning('No Design', 'Please add at least one design to a zone')
       return
@@ -104,27 +104,6 @@ function Customizer() {
     // Export canvas as image
     const previewImage = canvasRef.current.toDataURL('image/png')
     
-    // Add to cart store
-    useCartStore.getState().addItem({
-      productId,
-      productType: product!.type,
-      productName: product!.name,
-      size: selectedSize,
-      color: selectedColor,
-      quantity: 1,
-      price: product!.basePrice,
-      customDesign: {
-        imageUrl: previewImage,
-        position: { x: 0, y: 0 },
-        scale: 1,
-        rotation: 0
-      },
-      designUrl: previewImage
-    })
-
-    toast.success('Added to Cart', `${product!.name} (${selectedColor}, ${selectedSize})`)
-    
-    // Show preview
     const preview: PreviewData = {
       preview: previewImage,
       design: {
@@ -141,6 +120,43 @@ function Customizer() {
 
     setPreviewData(preview)
     setShowPreview(true)
+  }
+
+  const handleAddToCart = () => {
+    if (!canvasRef.current) {
+      toast.warning('No Design', 'Please add at least one design to a zone')
+      return
+    }
+
+    // Check if any zones have designs
+    const hasDesigns = Object.values(zonePlacements).some(p => p !== null)
+    if (!hasDesigns) {
+      toast.warning('No Design', 'Please add at least one design to a zone')
+      return
+    }
+
+    // Export canvas as image
+    const previewImage = canvasRef.current.toDataURL('image/png')
+    
+    // Add to cart store with placements for unique hashing
+    useCartStore.getState().addItem({
+      productId,
+      name: product!.name,
+      image: previewImage,
+      size: selectedSize,
+      color: selectedColor,
+      price: product!.basePrice,
+      placements: zonePlacements, // Include placements for unique hash
+      customDesign: {
+        imageUrl: previewImage,
+        position: { x: 0, y: 0 },
+        scale: 1,
+        rotation: 0
+      },
+      designUrl: previewImage
+    })
+
+    toast.success('Added to Cart', `${product!.name} (${selectedColor}, ${selectedSize})`)
   }
 
   return (
@@ -177,6 +193,7 @@ function Customizer() {
               onColorChange={setSelectedColor}
               onSizeChange={setSelectedSize}
               onAddToCart={handleAddToCart}
+              onPreview={handlePreview}
               onChangeProduct={() => setShowChangeProduct(true)}
             />
 
